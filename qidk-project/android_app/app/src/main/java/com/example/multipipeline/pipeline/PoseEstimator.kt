@@ -62,7 +62,9 @@ class PoseEstimator {
             val dx = (nx * depth.width).toInt().coerceIn(0, depth.width - 1)
             val dy = (ny * depth.height).toInt().coerceIn(0, depth.height - 1)
             val zNorm = depth.normalizedDepth[dy * depth.width + dx]
-            val z = DEPTH_MIN_M + zNorm * (DEPTH_MAX_M - DEPTH_MIN_M)
+            // Depth Anything V2 outputs disparity (1 = closest, 0 = farthest).
+            // Invert to map to distance in meters: 1 -> DEPTH_MIN_M, 0 -> DEPTH_MAX_M
+            val z = DEPTH_MIN_M + (1f - zNorm) * (DEPTH_MAX_M - DEPTH_MIN_M)
             if (z > 0f) {
                 // Pinhole back-projection collapses to this simple form because
                 // fx = fy = width in the reference pipeline's intrinsics.

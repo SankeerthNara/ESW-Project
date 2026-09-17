@@ -2,6 +2,7 @@ package com.example.multipipeline.camera
 
 import android.content.Context
 import android.graphics.Bitmap
+import android.graphics.Matrix
 import androidx.camera.core.CameraSelector
 import androidx.camera.core.ImageAnalysis
 import androidx.camera.core.ImageProxy
@@ -48,7 +49,18 @@ class CameraManager(
 
     private fun handleFrame(proxy: ImageProxy) {
         try {
-            val bitmap = proxy.toBitmap() // ImageProxy.toBitmap() - androidx.camera.core extension (API 29+)
+            val rawBitmap = proxy.toBitmap() // ImageProxy.toBitmap() - androidx.camera.core extension (API 29+)
+            val rotationDegrees = proxy.imageInfo.rotationDegrees
+            val bitmap = if (rotationDegrees != 0) {
+                val matrix = Matrix().apply { postRotate(rotationDegrees.toFloat()) }
+                val rotated = Bitmap.createBitmap(rawBitmap, 0, 0, rawBitmap.width, rawBitmap.height, matrix, true)
+                if (rotated != rawBitmap) {
+                    rawBitmap.recycle()
+                }
+                rotated
+            } else {
+                rawBitmap
+            }
             onFrame(bitmap)
         } finally {
             proxy.close()

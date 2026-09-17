@@ -26,7 +26,7 @@ class DepthStage(context: Context) {
 
     fun run(frame: Bitmap): DepthResult {
         val resized = ImageUtils.resizeSquare(frame, INPUT_SIZE)
-        val input = ImageUtils.bitmapToChwFloatImageNet(resized)
+        val input = ImageUtils.bitmapToHwcFloatImageNet(resized)
         val outputs = runner.run(input)
 
         val raw = outputs[OUTPUT_TENSOR_NAME]

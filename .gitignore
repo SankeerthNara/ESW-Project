@@ -21,6 +21,7 @@ qairt/
 checkpoints/
 **/checkpoints/
 *.ckpt
+**/Depth-Anything-V2/
 
 # Model conversion intermediate build outputs
 build/

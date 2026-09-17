@@ -35,9 +35,16 @@ class SegmentationStage(
     private val runner = SnpeModelRunner(context, "seg.dlc")
     private val numAnchors = 8400 // standard for 640 input across P3/P4/P5 - verify against your export
 
+    private data class RawCandidate(
+        val classId: Int,
+        val score: Float,
+        val box: FloatArray,
+        val coeffs: FloatArray,
+    )
+
     fun run(frame: Bitmap): SegResult {
         val resized = ImageUtils.resizeSquare(frame, INPUT_SIZE)
-        val input = ImageUtils.bitmapToChwFloat(resized)
+        val input = ImageUtils.bitmapToHwcFloat(resized)
         val outputs = runner.run(input)
 
         val pred = outputs[OUTPUT0_NAME]
@@ -47,8 +54,9 @@ class SegmentationStage(
             ?: outputs.entries.firstOrNull { it.key.contains("output1", ignoreCase = true) }?.value
             ?: return SegResult(emptyList())
 
-        val rowLen = 4 + numClasses + NUM_MASK_COEFF
-        val candidates = ArrayList<SegInstance>()
+        val rawCandidates = ArrayList<RawCandidate>()
+        var topScore = 0f
+        var topClass = -1
 
         // pred is laid out [rowLen, numAnchors] (channels-first, as exported by ultralytics)
         for (a in 0 until numAnchors) {
@@ -60,6 +68,10 @@ class SegmentationStage(
                     bestScore = score
                     bestClass = c
                 }
+            }
+            if (bestScore > topScore) {
+                topScore = bestScore
+                topClass = bestClass
             }
             if (bestScore < confThreshold) continue
 
@@ -73,44 +85,58 @@ class SegmentationStage(
             val y2 = cy + h / 2f
 
             val coeffs = FloatArray(NUM_MASK_COEFF) { pred[(4 + numClasses + it) * numAnchors + a] }
-            val mask = buildMask(coeffs, proto, x1, y1, x2, y2)
+            rawCandidates.add(RawCandidate(bestClass, bestScore, floatArrayOf(x1, y1, x2, y2), coeffs))
+        }
 
-            candidates.add(
-                SegInstance(
-                    classId = bestClass,
-                    score = bestScore,
-                    box = floatArrayOf(x1, y1, x2, y2),
-                    maskWidth = PROTO_SIZE,
-                    maskHeight = PROTO_SIZE,
-                    mask = mask,
-                )
+        android.util.Log.i("SegmentationStage", "pred size: ${pred.size}, proto size: ${proto.size}, Top score: ${"%.4f".format(topScore)} (class $topClass), pred min: ${pred.minOrNull()}, max: ${pred.maxOrNull()}, candidates: ${rawCandidates.size}")
+
+        // Run NMS on bounding boxes first to avoid expensive mask computations on suppressed candidates
+        val kept = nmsCandidates(rawCandidates)
+
+        // Build masks only for surviving detections
+        val instances = kept.map { c ->
+            val mask = buildMask(c.coeffs, proto, c.box[0], c.box[1], c.box[2], c.box[3])
+            SegInstance(
+                classId = c.classId,
+                score = c.score,
+                box = c.box,
+                maskWidth = PROTO_SIZE,
+                maskHeight = PROTO_SIZE,
+                mask = mask,
             )
         }
 
-        return SegResult(nms(candidates))
+        return SegResult(instances)
     }
 
     private fun buildMask(coeffs: FloatArray, proto: FloatArray, x1: Float, y1: Float, x2: Float, y2: Float): FloatArray {
         val planeSize = PROTO_SIZE * PROTO_SIZE
         val mask = FloatArray(planeSize)
-        for (p in 0 until planeSize) {
-            var sum = 0f
-            for (k in 0 until NUM_MASK_COEFF) {
-                sum += coeffs[k] * proto[k * planeSize + p]
-            }
-            mask[p] = sigmoid(sum)
-        }
+
         // Zero out anything outside the box (proto space is INPUT_SIZE/4 = 160, same scale as PROTO_SIZE here)
         val scale = PROTO_SIZE.toFloat() / INPUT_SIZE
         val bx1 = (x1 * scale).toInt().coerceIn(0, PROTO_SIZE - 1)
         val by1 = (y1 * scale).toInt().coerceIn(0, PROTO_SIZE - 1)
         val bx2 = (x2 * scale).toInt().coerceIn(0, PROTO_SIZE - 1)
         val by2 = (y2 * scale).toInt().coerceIn(0, PROTO_SIZE - 1)
-        for (yy in 0 until PROTO_SIZE) {
-            for (xx in 0 until PROTO_SIZE) {
-                if (xx < bx1 || xx > bx2 || yy < by1 || yy > by2) {
-                    mask[yy * PROTO_SIZE + xx] = 0f
+
+        val isNhwc = proto.size == planeSize * NUM_MASK_COEFF
+        for (yy in by1..by2) {
+            val yOffset = yy * PROTO_SIZE
+            for (xx in bx1..bx2) {
+                val p = yOffset + xx
+                var sum = 0f
+                if (isNhwc) {
+                    val protoOffset = p * NUM_MASK_COEFF
+                    for (k in 0 until NUM_MASK_COEFF) {
+                        sum += coeffs[k] * proto[protoOffset + k]
+                    }
+                } else {
+                    for (k in 0 until NUM_MASK_COEFF) {
+                        sum += coeffs[k] * proto[k * planeSize + p]
+                    }
                 }
+                mask[p] = sigmoid(sum)
             }
         }
         return mask
@@ -118,9 +144,9 @@ class SegmentationStage(
 
     private fun sigmoid(x: Float) = (1f / (1f + exp(-x)))
 
-    private fun nms(instances: List<SegInstance>): List<SegInstance> {
+    private fun nmsCandidates(instances: List<RawCandidate>): List<RawCandidate> {
         val sorted = instances.sortedByDescending { it.score }.toMutableList()
-        val kept = ArrayList<SegInstance>()
+        val kept = ArrayList<RawCandidate>()
         while (sorted.isNotEmpty()) {
             val best = sorted.removeAt(0)
             kept.add(best)
