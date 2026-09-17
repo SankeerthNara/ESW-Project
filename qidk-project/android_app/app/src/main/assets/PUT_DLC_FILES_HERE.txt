@@ -1,0 +1,5 @@
+Copy depth.dlc, seg.dlc, and pose.dlc into this folder (app/src/main/assets/)
+before building. They are produced by model_conversion/convert_to_dlc.sh.
+
+Delete this placeholder file once the three .dlc files are in place (or leave
+it - it won't affect the build).

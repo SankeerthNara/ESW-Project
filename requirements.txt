@@ -1,0 +1,21 @@
+# Deep Learning Frameworks
+torch>=2.0.0
+torchvision>=0.15.0
+
+# Detection, Segmentation & Pose Modeling
+ultralytics>=8.0.0
+
+# ONNX Export and Optimization (compatible with Qualcomm QNN/SNPE converters)
+onnx>=1.14.0,<=1.16.1
+onnxruntime>=1.15.0
+onnxsim>=0.4.33
+
+# Image & Array Processing
+numpy>=1.23.0,<2.0.0
+pillow>=9.5.0
+opencv-python>=4.8.0
+
+# Scientific & Visualization
+scipy>=1.10.0
+matplotlib>=3.7.0
+tqdm>=4.65.0

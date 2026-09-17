@@ -1,0 +1,87 @@
+# ==============================================================================
+# Qualcomm QNN / QAIRT SDK (Proprietary binaries - download from Qualcomm QPM)
+# ==============================================================================
+qnn/
+qairt/
+**/qairt/
+**/qnn/
+
+# ==============================================================================
+# Neural Network Models & Large Binary Weights (>100MB / GitHub limits)
+# ==============================================================================
+*.pth
+*.pt
+*.onnx
+*.onnx.data
+*.dlc
+*.bin
+*.raw
+
+# Checkpoint directories
+checkpoints/
+**/checkpoints/
+*.ckpt
+
+# Model conversion intermediate build outputs
+build/
+output/
+model_conversion/build/
+model_conversion/output/
+qidk-project/model_conversion/build/
+qidk-project/model_conversion/output/
+**/htp_test/
+
+# ==============================================================================
+# Android & Gradle Build Artifacts
+# ==============================================================================
+.gradle/
+**/build/
+**/app/build/
+local.properties
+*.apk
+*.aab
+*.ap_
+
+# Native & Vendor libraries (Qualcomm proprietary binaries)
+**/app/libs/*.aar
+**/app/src/main/jniLibs/
+**/app/src/main/assets/*.dlc
+!**/app/src/main/assets/PUT_DLC_FILES_HERE.txt
+
+# Android Studio / IntelliJ / Eclipse / VS Code IDE files
+.idea/
+*.iml
+.vscode/
+.cxx/
+.externalNativeBuild/
+captures/
+.navigation/
+
+# ==============================================================================
+# Python & Virtual Environments
+# ==============================================================================
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+.venv/
+ENV/
+*.egg-info/
+dist/
+eggs/
+.eggs/
+.pytest_cache/
+.ipynb_checkpoints/
+
+# ==============================================================================
+# OS & Editor Artifacts
+# ==============================================================================
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+*~
+*.bak
