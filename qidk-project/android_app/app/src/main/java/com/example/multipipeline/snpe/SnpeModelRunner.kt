@@ -72,27 +72,40 @@ class SnpeModelRunner(
     val inputShape: IntArray = network.inputTensorsShapes[inputName]!!
 
     init {
+        Log.i(TAG, "[$assetModelName] Active Runtime: ${network.runtime}")
         Log.i(TAG, "[$assetModelName] Input: $inputName, Shape: ${inputShape.joinToString("x")}")
         Log.i(TAG, "[$assetModelName] Outputs: ${network.outputTensorsNames.joinToString(", ")}")
     }
 
-    fun run(inputChw: FloatArray): Map<String, FloatArray> {
-        val inputTensor = network.createFloatTensor(*inputShape)
+    private val inputTensor = network.createFloatTensor(*inputShape)
+    private val inputs = mapOf(inputName to inputTensor)
+
+    fun run(inputChw: FloatArray): Map<String, FloatArray> = synchronized(this) {
+        val t0 = System.currentTimeMillis()
         inputTensor.write(inputChw, 0, inputChw.size)
-        val inputs = mapOf(inputName to inputTensor)
+        val t1 = System.currentTimeMillis()
         val outputs = network.execute(inputs)
-        val result = HashMap<String, FloatArray>()
+        val t2 = System.currentTimeMillis()
+        val result = HashMap<String, FloatArray>(outputs.size)
         for ((name, tensor) in outputs) {
             val arr = FloatArray(tensor.size)
             tensor.read(arr, 0, arr.size)
             result[name] = arr
+            tensor.release()
         }
-        inputTensor.release()
-        outputs.values.forEach { it.release() }
+        val t3 = System.currentTimeMillis()
+        if (t3 - t0 > 30) {
+            Log.i(TAG, "[$assetModelName] write=${t1 - t0}ms execute=${t2 - t1}ms read=${t3 - t2}ms total=${t3 - t0}ms")
+        }
         return result
     }
 
-    fun close() { network.release() }
+    fun close() {
+        try {
+            inputTensor.release()
+        } catch (_: Throwable) {}
+        network.release()
+    }
 
     private fun copyAssetToFile(context: Context, assetName: String): File {
         val outFile = File(context.filesDir, assetName)

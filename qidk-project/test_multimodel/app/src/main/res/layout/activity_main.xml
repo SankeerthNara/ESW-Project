@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#000000">
+
+    <androidx.camera.view.PreviewView
+        android:id="@+id/previewView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="invisible" />
+
+    <com.example.multipipeline.overlay.OverlayView
+        android:id="@+id/overlayView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+    <TextView
+        android:id="@+id/fpsText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="top|start"
+        android:layout_margin="12dp"
+        android:textColor="#FFFFFF"
+        android:textSize="13sp"
+        android:shadowColor="#000000"
+        android:shadowRadius="4"
+        android:text="fps: --" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:orientation="horizontal"
+        android:background="#AA000000"
+        android:padding="4dp"
+        android:weightSum="5">
+
+        <Button android:id="@+id/btnDepth" android:layout_width="0dp" android:layout_height="wrap_content"
+            android:layout_weight="1" android:text="Depth" android:textSize="11sp" android:padding="4dp" />
+        <Button android:id="@+id/btnSeg" android:layout_width="0dp" android:layout_height="wrap_content"
+            android:layout_weight="1" android:text="Seg" android:textSize="11sp" android:padding="4dp" />
+        <Button android:id="@+id/btnPose" android:layout_width="0dp" android:layout_height="wrap_content"
+            android:layout_weight="1" android:text="Pose" android:textSize="11sp" android:padding="4dp" />
+        <Button android:id="@+id/btnPipeline" android:layout_width="0dp" android:layout_height="wrap_content"
+            android:layout_weight="1" android:text="Pipeline" android:textSize="11sp" android:padding="4dp" />
+        <Button android:id="@+id/btnAll" android:layout_width="0dp" android:layout_height="wrap_content"
+            android:layout_weight="1" android:text="All" android:textSize="11sp" android:padding="4dp" />
+    </LinearLayout>
+
+</FrameLayout>

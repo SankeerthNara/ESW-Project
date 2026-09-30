@@ -33,7 +33,9 @@ class SegmentationStage(
     }
 
     private val runner = SnpeModelRunner(context, "seg.dlc")
-    private val numAnchors = 8400 // standard for 640 input across P3/P4/P5 - verify against your export
+    private val numAnchors = 8400
+    private val bestScores = FloatArray(numAnchors)
+    private val bestClasses = IntArray(numAnchors)
 
     private data class RawCandidate(
         val classId: Int,
@@ -43,52 +45,107 @@ class SegmentationStage(
     )
 
     fun run(frame: Bitmap): SegResult {
+        val t0 = System.currentTimeMillis()
         val resized = ImageUtils.resizeSquare(frame, INPUT_SIZE)
+        val t1 = System.currentTimeMillis()
         val input = ImageUtils.bitmapToHwcFloat(resized)
+        val t2 = System.currentTimeMillis()
         val outputs = runner.run(input)
+        val t3 = System.currentTimeMillis()
 
-        val pred = outputs[OUTPUT0_NAME]
-            ?: outputs.entries.firstOrNull { it.key.contains("output0", ignoreCase = true) }?.value
-            ?: return SegResult(emptyList())
-        val proto = outputs[OUTPUT1_NAME]
-            ?: outputs.entries.firstOrNull { it.key.contains("output1", ignoreCase = true) }?.value
+        val decoupledScores = outputs["scores"] ?: outputs.entries.firstOrNull { it.key.contains("scores", ignoreCase = true) }?.value
+        val decoupledBoxes = outputs["boxes"] ?: outputs.entries.firstOrNull { it.key.contains("boxes", ignoreCase = true) }?.value
+        val decoupledCoeffs = outputs["coeffs"] ?: outputs.entries.firstOrNull { it.key.contains("coeffs", ignoreCase = true) }?.value
+        val proto = outputs["proto"]
+            ?: outputs[OUTPUT1_NAME]
+            ?: outputs.entries.firstOrNull { it.key.contains("proto", ignoreCase = true) || it.key.contains("output1", ignoreCase = true) }?.value
             ?: return SegResult(emptyList())
 
         val rawCandidates = ArrayList<RawCandidate>()
         var topScore = 0f
         var topClass = -1
 
-        // pred is laid out [rowLen, numAnchors] (channels-first, as exported by ultralytics)
-        for (a in 0 until numAnchors) {
-            var bestClass = -1
-            var bestScore = 0f
+        if (decoupledScores != null && decoupledBoxes != null && decoupledCoeffs != null) {
+            // Decoupled heads branch (INT8 high-precision scale per head)
+            bestScores.fill(0f)
             for (c in 0 until numClasses) {
-                val score = pred[(4 + c) * numAnchors + a]
-                if (score > bestScore) {
-                    bestScore = score
-                    bestClass = c
+                val offset = c * numAnchors
+                for (a in 0 until numAnchors) {
+                    val score = decoupledScores[offset + a]
+                    if (score > bestScores[a]) {
+                        bestScores[a] = score
+                        bestClasses[a] = c
+                    }
                 }
             }
-            if (bestScore > topScore) {
-                topScore = bestScore
-                topClass = bestClass
+
+            for (a in 0 until numAnchors) {
+                val score = bestScores[a]
+                if (score > topScore) {
+                    topScore = score
+                    topClass = bestClasses[a]
+                }
+                if (score < confThreshold) continue
+
+                val cx = decoupledBoxes[0 * numAnchors + a]
+                val cy = decoupledBoxes[1 * numAnchors + a]
+                val w = decoupledBoxes[2 * numAnchors + a]
+                val h = decoupledBoxes[3 * numAnchors + a]
+                val x1 = cx - w / 2f
+                val y1 = cy - h / 2f
+                val x2 = cx + w / 2f
+                val y2 = cy + h / 2f
+
+                val coeffs = FloatArray(NUM_MASK_COEFF) { k -> decoupledCoeffs[k * numAnchors + a] }
+                rawCandidates.add(RawCandidate(bestClasses[a], score, floatArrayOf(x1, y1, x2, y2), coeffs))
             }
-            if (bestScore < confThreshold) continue
+            android.util.Log.i("SegmentationStage", "[Decoupled INT8] scores size: ${decoupledScores.size}, proto size: ${proto.size}, Top score: ${"%.4f".format(topScore)} (class $topClass), candidates: ${rawCandidates.size}")
+        } else {
+            // Legacy concatenated output0 branch
+            val pred = outputs[OUTPUT0_NAME]
+                ?: outputs.entries.firstOrNull { it.key.contains("output0", ignoreCase = true) }?.value
+                ?: return SegResult(emptyList())
 
-            val cx = pred[0 * numAnchors + a]
-            val cy = pred[1 * numAnchors + a]
-            val w = pred[2 * numAnchors + a]
-            val h = pred[3 * numAnchors + a]
-            val x1 = cx - w / 2f
-            val y1 = cy - h / 2f
-            val x2 = cx + w / 2f
-            val y2 = cy + h / 2f
+            bestScores.fill(0f)
+            for (c in 0 until numClasses) {
+                val offset = (4 + c) * numAnchors
+                for (a in 0 until numAnchors) {
+                    val score = pred[offset + a]
+                    if (score > bestScores[a]) {
+                        bestScores[a] = score
+                        bestClasses[a] = c
+                    }
+                }
+            }
 
-            val coeffs = FloatArray(NUM_MASK_COEFF) { pred[(4 + numClasses + it) * numAnchors + a] }
-            rawCandidates.add(RawCandidate(bestClass, bestScore, floatArrayOf(x1, y1, x2, y2), coeffs))
+            val cxRow = 0 * numAnchors
+            val cyRow = 1 * numAnchors
+            val wRow = 2 * numAnchors
+            val hRow = 3 * numAnchors
+            val coeffBase = (4 + numClasses) * numAnchors
+
+            for (a in 0 until numAnchors) {
+                val score = bestScores[a]
+                if (score > topScore) {
+                    topScore = score
+                    topClass = bestClasses[a]
+                }
+                if (score < confThreshold) continue
+
+                val cx = pred[cxRow + a]
+                val cy = pred[cyRow + a]
+                val w = pred[wRow + a]
+                val h = pred[hRow + a]
+                val x1 = cx - w / 2f
+                val y1 = cy - h / 2f
+                val x2 = cx + w / 2f
+                val y2 = cy + h / 2f
+
+                val coeffs = FloatArray(NUM_MASK_COEFF) { k -> pred[coeffBase + k * numAnchors + a] }
+                rawCandidates.add(RawCandidate(bestClasses[a], score, floatArrayOf(x1, y1, x2, y2), coeffs))
+            }
+            android.util.Log.i("SegmentationStage", "[Legacy FP16] pred size: ${pred.size}, proto size: ${proto.size}, Top score: ${"%.4f".format(topScore)} (class $topClass), candidates: ${rawCandidates.size}")
         }
-
-        android.util.Log.i("SegmentationStage", "pred size: ${pred.size}, proto size: ${proto.size}, Top score: ${"%.4f".format(topScore)} (class $topClass), pred min: ${pred.minOrNull()}, max: ${pred.maxOrNull()}, candidates: ${rawCandidates.size}")
 
         // Run NMS on bounding boxes first to avoid expensive mask computations on suppressed candidates
         val kept = nmsCandidates(rawCandidates)
@@ -105,6 +162,9 @@ class SegmentationStage(
                 mask = mask,
             )
         }
+
+        val t4 = System.currentTimeMillis()
+        android.util.Log.i("ProfileSeg", "resize=${t1-t0}ms float=${t2-t1}ms npu=${t3-t2}ms post=${t4-t3}ms total=${t4-t0}ms")
 
         return SegResult(instances)
     }

@@ -1,0 +1,32 @@
+{
+  "Pose Estimation (YOLOv8n-Pose DLC)": {
+    "job_id": "j5wl93y6p",
+    "url": "https://workbench.aihub.qualcomm.com/jobs/j5wl93y6p/",
+    "status": "SUCCESS",
+    "message": "",
+    "inference_time_ms": 1.092,
+    "peak_memory_mb": 150.33203125,
+    "fps": 915.7509157509157,
+    "compute_units": {}
+  },
+  "Segmentation (YOLOv8n-Seg DLC)": {
+    "job_id": "jg9z4yolp",
+    "url": "https://workbench.aihub.qualcomm.com/jobs/jg9z4yolp/",
+    "status": "SUCCESS",
+    "message": "",
+    "inference_time_ms": 1.054,
+    "peak_memory_mb": 150.85546875,
+    "fps": 948.7666034155598,
+    "compute_units": {}
+  },
+  "Depth Estimation (Depth Anything V2 Small DLC)": {
+    "job_id": "jp1n8ez7g",
+    "url": "https://workbench.aihub.qualcomm.com/jobs/jp1n8ez7g/",
+    "status": "SUCCESS",
+    "message": "",
+    "inference_time_ms": 5.864,
+    "peak_memory_mb": 255.45703125,
+    "fps": 170.53206002728513,
+    "compute_units": {}
+  }
+}

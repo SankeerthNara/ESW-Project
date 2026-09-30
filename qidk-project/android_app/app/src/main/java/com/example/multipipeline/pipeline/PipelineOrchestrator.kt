@@ -23,22 +23,15 @@ class PipelineOrchestrator(context: Context) {
     private val pool = Executors.newFixedThreadPool(2)
 
     fun process(frame: Bitmap): FrameResult {
-        val depthFuture = pool.submit<DepthResult> { depthStage.run(frame) }
-        val segFuture = pool.submit<SegResult> { segStage.run(frame) }
-
-        val depth = runCatching { depthFuture.get() }
+        val t0 = System.currentTimeMillis()
+        val depth = runCatching { depthStage.run(frame) }
             .onFailure { Log.e(TAG, "Depth stage threw: ${it.message}", it) }
             .getOrNull()
-
-        val seg = runCatching { segFuture.get() }
+        val seg = runCatching { segStage.run(frame) }
             .onFailure { Log.e(TAG, "Segmentation stage threw: ${it.message}", it) }
             .getOrNull()
 
-        Log.i(
-            TAG,
-            "depth=${depth != null} (size=${depth?.width}x${depth?.height}), " +
-                    "seg instances=${seg?.instances?.size ?: "null"}"
-        )
+        val t1 = System.currentTimeMillis()
 
         val pose = if (depth != null && seg != null) {
             runCatching { poseEstimator.run(seg, depth, frame.width, frame.height) }
@@ -46,7 +39,9 @@ class PipelineOrchestrator(context: Context) {
                 .getOrNull()
         } else null
 
-        Log.i(TAG, "pose objects=${pose?.objects?.size ?: "null (depth or seg was null)"}")
+        val t2 = System.currentTimeMillis()
+
+        Log.i("ProfilePipeline", "models_parallel=${t1 - t0}ms, pose=${t2 - t1}ms, total=${t2 - t0}ms, fps=${if (t2 > t0) "%.1f".format(1000f / (t2 - t0)) else "0"}")
 
         return FrameResult(depth, seg, pose, frame.width, frame.height)
     }

@@ -18,25 +18,26 @@ import com.example.multipipeline.snpe.SnpeModelRunner
  */
 class DepthStage(context: Context) {
     companion object {
-        const val INPUT_SIZE = 392 // Depth Anything V2 Small (vits) static square input
+        const val INPUT_SIZE = 392 // Depth Anything V2 Small (vits) 28x28 patches static square input
         const val OUTPUT_TENSOR_NAME = "depth"
     }
 
     private val runner = SnpeModelRunner(context, "depth.dlc")
 
     fun run(frame: Bitmap): DepthResult {
+        val t0 = System.currentTimeMillis()
         val resized = ImageUtils.resizeSquare(frame, INPUT_SIZE)
+        val t1 = System.currentTimeMillis()
         val input = ImageUtils.bitmapToHwcFloatImageNet(resized)
+        val t2 = System.currentTimeMillis()
         val outputs = runner.run(input)
+        val t3 = System.currentTimeMillis()
 
         val raw = outputs[OUTPUT_TENSOR_NAME]
             ?: outputs.entries.firstOrNull { it.key.contains("depth", ignoreCase = true) }?.value
             ?: outputs.values.firstOrNull()
             ?: FloatArray(INPUT_SIZE * INPUT_SIZE)
 
-        // Depth Anything V2 outputs relative (inverse) depth, arbitrary scale.
-        // Normalize to 0-1 across this frame for display and for the
-        // pseudo-metric mapping pose estimation uses (0.3m-2.5m range).
         var min = Float.MAX_VALUE
         var max = -Float.MAX_VALUE
         for (v in raw) {
@@ -45,6 +46,9 @@ class DepthStage(context: Context) {
         }
         val range = (max - min).takeIf { it > 1e-6f } ?: 1f
         val normalized = FloatArray(raw.size) { (raw[it] - min) / range }
+        val t4 = System.currentTimeMillis()
+
+        android.util.Log.i("ProfileDepth", "resize=${t1-t0}ms float=${t2-t1}ms npu=${t3-t2}ms post=${t4-t3}ms total=${t4-t0}ms")
 
         return DepthResult(INPUT_SIZE, INPUT_SIZE, raw, normalized)
     }
