@@ -3,14 +3,17 @@ package com.example.multipipeline
 import android.Manifest
 import android.content.pm.PackageManager
 import android.os.Bundle
+import android.util.Log
+import android.view.WindowManager
 import android.widget.Button
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
-import androidx.camera.view.PreviewView
 import androidx.core.content.ContextCompat
 import com.example.multipipeline.camera.CameraManager
 import com.example.multipipeline.overlay.OverlayView
+import com.example.multipipeline.pipeline.FramePool
 import com.example.multipipeline.pipeline.PipelineOrchestrator
+import com.example.multipipeline.pipeline.RenderFrame
 import com.example.multipipeline.pipeline.ViewMode
 
 class MainActivity : AppCompatActivity() {
@@ -19,6 +22,13 @@ class MainActivity : AppCompatActivity() {
     private lateinit var cameraManager: CameraManager
     private lateinit var overlayView: OverlayView
     private lateinit var fpsText: TextView
+    private val framePool = FramePool()
+
+    // Analysis-thread only.
+    private var currentFrame: RenderFrame? = null
+    private var windowStartNs = 0L
+    private var windowFrames = 0
+    private var windowLatencyMs = 0L
 
     private val requestPermission = registerForActivityResult(
         androidx.activity.result.contract.ActivityResultContracts.RequestPermission()
@@ -29,25 +39,22 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
 
         overlayView = findViewById(R.id.overlayView)
+        overlayView.framePool = framePool
         fpsText = findViewById(R.id.fpsText)
-        val previewView: PreviewView = findViewById(R.id.previewView)
 
         setupModeButtons()
 
         orchestrator = PipelineOrchestrator(this)
-        cameraManager = CameraManager(this, this, previewView) { bitmap ->
-            val t0 = System.currentTimeMillis()
-            val result = orchestrator.process(bitmap)
-            val t1 = System.currentTimeMillis()
-
-            runOnUiThread {
-                overlayView.update(result, bitmap)
-                val fps = if (t1 > t0) 1000f / (t1 - t0) else 0f
-                fpsText.text = "pipeline: ${t1 - t0}ms (~${"%.1f".format(fps)} fps)"
-            }
-        }
+        cameraManager = CameraManager(
+            this, this,
+            acquireBitmap = { w, h ->
+                framePool.acquire().also { currentFrame = it }.cameraBitmap(w, h)
+            },
+            onFrame = { onCameraFrame() },
+        )
 
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA)
             == PackageManager.PERMISSION_GRANTED
@@ -56,6 +63,35 @@ class MainActivity : AppCompatActivity() {
         } else {
             requestPermission.launch(Manifest.permission.CAMERA)
         }
+    }
+
+    private fun onCameraFrame() {
+        val frame = currentFrame ?: return
+        orchestrator.process(frame)
+        framePool.publish(frame)
+        overlayView.postInvalidate()
+        recordFps(frame)
+    }
+
+    /** Displayed-frame rate over ~1 s windows - what the user actually sees. */
+    private fun recordFps(frame: RenderFrame) {
+        val now = System.nanoTime()
+        if (windowStartNs == 0L) windowStartNs = now
+        windowFrames++
+        windowLatencyMs += frame.timings.totalMs
+        val elapsedNs = now - windowStartNs
+        if (elapsedNs < 1_000_000_000L) return
+
+        val fps = windowFrames * 1e9f / elapsedNs
+        val avgMs = windowLatencyMs.toFloat() / windowFrames
+        val t = frame.timings
+        val text = "%.1f fps | pipeline %.1f ms (NPU depth %d, seg %d) | %d obj"
+            .format(fps, avgMs, t.depthNpuMs, t.segNpuMs, frame.instances.size)
+        Log.i("ProfilePipeline", text)
+        runOnUiThread { fpsText.text = text }
+        windowStartNs = now
+        windowFrames = 0
+        windowLatencyMs = 0
     }
 
     private fun setupModeButtons() {
@@ -72,6 +108,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onDestroy() {
         super.onDestroy()
+        cameraManager.shutdown()
         orchestrator.close()
     }
 }

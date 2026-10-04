@@ -1,93 +1,62 @@
 package com.example.multipipeline.pipeline
 
 import android.graphics.Bitmap
+import android.graphics.Canvas
 import android.graphics.Matrix
+import android.graphics.Paint
+import com.example.multipipeline.snpe.QuantEncoding
+import java.nio.ByteBuffer
 
-object ImageUtils {
+/**
+ * Turns a camera frame into a model's quantized NHWC uint8 input with no
+ * per-frame allocation: a bilinear (Skia) stretch into a reused square
+ * bitmap, then one pass that packs RGB bytes through per-channel lookup
+ * tables. The tables fold 0-1 scaling, optional ImageNet mean/std, and the
+ * model's input quantization into a single byte->byte map.
+ */
+class ModelInputPacker(
+    private val size: Int,
+    inputEncoding: QuantEncoding,
+    imagenet: Boolean,
+) {
+    private val scaled = Bitmap.createBitmap(size, size, Bitmap.Config.ARGB_8888)
+    private val canvas = Canvas(scaled)
+    private val matrix = Matrix()
+    private val paint = Paint(Paint.FILTER_BITMAP_FLAG)
+    private val pixels = IntArray(size * size)
+    private val packed = ByteArray(size * size * 3)
 
-    private val IMAGENET_MEAN = floatArrayOf(0.485f, 0.456f, 0.406f)
-    private val IMAGENET_STD = floatArrayOf(0.229f, 0.224f, 0.225f)
+    private val lutR = buildLut(inputEncoding, if (imagenet) 0 else -1)
+    private val lutG = buildLut(inputEncoding, if (imagenet) 1 else -1)
+    private val lutB = buildLut(inputEncoding, if (imagenet) 2 else -1)
 
-    /** Resize (simple stretch) to a square of [size]x[size]. */
-    fun resizeSquare(src: Bitmap, size: Int): Bitmap {
-        if (src.width == size && src.height == size) return src
-        val m = Matrix()
-        m.setScale(size.toFloat() / src.width, size.toFloat() / src.height)
-        return Bitmap.createBitmap(src, 0, 0, src.width, src.height, m, true)
+    fun pack(frame: Bitmap, dst: ByteBuffer) {
+        matrix.setScale(size.toFloat() / frame.width, size.toFloat() / frame.height)
+        canvas.drawBitmap(frame, matrix, paint)
+        scaled.getPixels(pixels, 0, size, 0, 0, size, size)
+
+        val r = lutR; val g = lutG; val b = lutB; val out = packed
+        var o = 0
+        for (p in pixels) {
+            out[o] = r[(p shr 16) and 0xFF]
+            out[o + 1] = g[(p shr 8) and 0xFF]
+            out[o + 2] = b[p and 0xFF]
+            o += 3
+        }
+        dst.clear()
+        dst.put(out)
+        dst.rewind()
     }
 
-    /**
-     * Bitmap -> NCHW float32 array, normalized to 0-1.
-     * Use for models expecting planar NCHW input.
-     */
-    fun bitmapToChwFloat(bmp: Bitmap): FloatArray = toChw(bmp, imagenet = false)
+    companion object {
+        private val IMAGENET_MEAN = floatArrayOf(0.485f, 0.456f, 0.406f)
+        private val IMAGENET_STD = floatArrayOf(0.229f, 0.224f, 0.225f)
 
-    /**
-     * Bitmap -> NCHW float32 array, normalized to 0-1 then ImageNet mean/std.
-     * Use for models expecting planar NCHW input.
-     */
-    fun bitmapToChwFloatImageNet(bmp: Bitmap): FloatArray = toChw(bmp, imagenet = true)
-
-    /**
-     * Bitmap -> NHWC float32 array (interleaved RGB), normalized to 0-1.
-     * Use for YOLOv8 models in SNPE/QNN.
-     */
-    fun bitmapToHwcFloat(bmp: Bitmap): FloatArray = toHwc(bmp, imagenet = false)
-
-    /**
-     * Bitmap -> NHWC float32 array (interleaved RGB), normalized to 0-1 then ImageNet mean/std.
-     * Use for Depth Anything V2 models in SNPE/QNN.
-     */
-    fun bitmapToHwcFloatImageNet(bmp: Bitmap): FloatArray = toHwc(bmp, imagenet = true)
-
-    private fun toChw(bmp: Bitmap, imagenet: Boolean): FloatArray {
-        val w = bmp.width
-        val h = bmp.height
-        val pixels = IntArray(w * h)
-        bmp.getPixels(pixels, 0, w, 0, 0, w, h)
-
-        val out = FloatArray(3 * w * h)
-        val plane = w * h
-        for (i in 0 until plane) {
-            val p = pixels[i]
-            var r = ((p shr 16) and 0xFF) / 255f
-            var g = ((p shr 8) and 0xFF) / 255f
-            var b = (p and 0xFF) / 255f
-            if (imagenet) {
-                r = (r - IMAGENET_MEAN[0]) / IMAGENET_STD[0]
-                g = (g - IMAGENET_MEAN[1]) / IMAGENET_STD[1]
-                b = (b - IMAGENET_MEAN[2]) / IMAGENET_STD[2]
-            }
-            out[i] = r
-            out[plane + i] = g
-            out[2 * plane + i] = b
+        /** channel = -1 for plain 0-1 scaling, 0/1/2 for ImageNet R/G/B. */
+        private fun buildLut(enc: QuantEncoding, channel: Int) = ByteArray(256) { v ->
+            var x = v / 255f
+            if (channel >= 0) x = (x - IMAGENET_MEAN[channel]) / IMAGENET_STD[channel]
+            enc.quant(x).toByte()
         }
-        return out
-    }
-
-    private fun toHwc(bmp: Bitmap, imagenet: Boolean): FloatArray {
-        val w = bmp.width
-        val h = bmp.height
-        val pixels = IntArray(w * h)
-        bmp.getPixels(pixels, 0, w, 0, 0, w, h)
-
-        val out = FloatArray(3 * w * h)
-        val totalPixels = w * h
-        for (i in 0 until totalPixels) {
-            val p = pixels[i]
-            var r = ((p shr 16) and 0xFF) / 255f
-            var g = ((p shr 8) and 0xFF) / 255f
-            var b = (p and 0xFF) / 255f
-            if (imagenet) {
-                r = (r - IMAGENET_MEAN[0]) / IMAGENET_STD[0]
-                g = (g - IMAGENET_MEAN[1]) / IMAGENET_STD[1]
-                b = (b - IMAGENET_MEAN[2]) / IMAGENET_STD[2]
-            }
-            val offset = i * 3
-            out[offset] = r
-            out[offset + 1] = g
-            out[offset + 2] = b
-        }
-        return out
     }
 }

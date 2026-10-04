@@ -4,12 +4,6 @@
     android:layout_height="match_parent"
     android:background="#000000">
 
-    <androidx.camera.view.PreviewView
-        android:id="@+id/previewView"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:visibility="invisible" />
-
     <com.example.multipipeline.overlay.OverlayView
         android:id="@+id/overlayView"
         android:layout_width="match_parent"
