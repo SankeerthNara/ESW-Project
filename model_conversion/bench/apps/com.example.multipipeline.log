@@ -1,0 +1,372 @@
+07-26 17:34:35.867 14524 14673 I ProfileSeg: resize=1ms float=3ms npu=108ms post=1ms total=113ms
+07-26 17:34:35.867 14524 14673 I ProfilePipeline: models_parallel=142ms, pose=0ms, total=142ms, fps=7.0
+07-26 17:34:35.900 14524 14673 I ProfileDepth: resize=0ms float=1ms npu=27ms post=0ms total=28ms
+07-26 17:34:36.015 14524 14673 I ProfileSeg: resize=3ms float=4ms npu=107ms post=1ms total=115ms
+07-26 17:34:36.015 14524 14673 I ProfilePipeline: models_parallel=143ms, pose=0ms, total=143ms, fps=7.0
+07-26 17:34:36.055 14524 14673 I ProfileDepth: resize=1ms float=1ms npu=29ms post=1ms total=32ms
+07-26 17:34:36.169 14524 14673 I ProfileSeg: resize=2ms float=4ms npu=107ms post=1ms total=114ms
+07-26 17:34:36.169 14524 14673 I ProfilePipeline: models_parallel=146ms, pose=0ms, total=146ms, fps=6.8
+07-26 17:34:36.206 14524 14673 I ProfileDepth: resize=0ms float=1ms npu=31ms post=1ms total=33ms
+07-26 17:34:36.322 14524 14673 I ProfileSeg: resize=2ms float=3ms npu=110ms post=1ms total=116ms
+07-26 17:34:36.322 14524 14673 I ProfilePipeline: models_parallel=149ms, pose=0ms, total=149ms, fps=6.7
+07-26 17:34:36.355 14524 14673 I ProfileDepth: resize=0ms float=2ms npu=25ms post=1ms total=28ms
+07-26 17:34:36.470 14524 14673 I ProfileSeg: resize=2ms float=3ms npu=109ms post=1ms total=115ms
+07-26 17:34:36.470 14524 14673 I ProfilePipeline: models_parallel=143ms, pose=0ms, total=143ms, fps=7.0
+07-26 17:34:36.503 14524 14673 I ProfileDepth: resize=0ms float=1ms npu=27ms post=0ms total=28ms
+07-26 17:34:36.621 14524 14673 I ProfileSeg: resize=2ms float=3ms npu=112ms post=1ms total=118ms
+07-26 17:34:36.621 14524 14673 I ProfilePipeline: models_parallel=146ms, pose=0ms, total=146ms, fps=6.8
+07-26 17:34:36.653 14524 14673 I ProfileDepth: resize=0ms float=1ms npu=26ms post=1ms total=28ms
+07-26 17:34:36.767 14524 14673 I ProfileSeg: resize=2ms float=3ms npu=108ms post=1ms total=114ms
+07-26 17:34:36.767 14524 14673 I ProfilePipeline: models_parallel=142ms, pose=0ms, total=142ms, fps=7.0
+07-26 17:34:36.802 14524 14673 I ProfileDepth: resize=1ms float=1ms npu=28ms post=1ms total=31ms
+07-26 17:34:36.915 14524 14673 I ProfileSeg: resize=2ms float=3ms npu=107ms post=1ms total=113ms
+07-26 17:34:36.915 14524 14673 I ProfilePipeline: models_parallel=144ms, pose=0ms, total=144ms, fps=6.9
+07-26 17:34:36.952 14524 14673 I ProfileDepth: resize=1ms float=1ms npu=30ms post=1ms total=33ms
+07-26 17:34:37.068 14524 14673 I ProfileSeg: resize=1ms float=3ms npu=111ms post=1ms total=116ms
+07-26 17:34:37.068 14524 14673 I ProfilePipeline: models_parallel=149ms, pose=0ms, total=149ms, fps=6.7
+07-26 17:34:37.100 14524 14673 I ProfileDepth: resize=1ms float=1ms npu=26ms post=0ms total=28ms
+07-26 17:34:37.215 14524 14673 I ProfileSeg: resize=2ms float=3ms npu=109ms post=1ms total=115ms
+07-26 17:34:37.215 14524 14673 I ProfilePipeline: models_parallel=143ms, pose=0ms, total=143ms, fps=7.0
+07-26 17:34:37.252 14524 14673 I ProfileDepth: resize=1ms float=1ms npu=30ms post=1ms total=33ms
+07-26 17:34:37.367 14524 14673 I ProfileSeg: resize=3ms float=3ms npu=108ms post=1ms total=115ms
+07-26 17:34:37.367 14524 14673 I ProfilePipeline: models_parallel=148ms, pose=0ms, total=148ms, fps=6.8
+07-26 17:34:37.402 14524 14673 I ProfileDepth: resize=0ms float=1ms npu=28ms post=1ms total=30ms
+07-26 17:34:37.515 14524 14673 I ProfileSeg: resize=2ms float=3ms npu=107ms post=1ms total=113ms
+07-26 17:34:37.515 14524 14673 I ProfilePipeline: models_parallel=143ms, pose=0ms, total=143ms, fps=7.0
+07-26 17:34:37.554 14524 14673 I ProfileDepth: resize=1ms float=1ms npu=27ms post=0ms total=29ms
+07-26 17:34:37.672 14524 14673 I ProfileSeg: resize=2ms float=3ms npu=112ms post=1ms total=118ms
+07-26 17:34:37.672 14524 14673 I ProfilePipeline: models_parallel=147ms, pose=0ms, total=147ms, fps=6.8
+07-26 17:34:37.707 14524 14673 I ProfileDepth: resize=1ms float=1ms npu=30ms post=0ms total=32ms
+07-26 17:34:37.823 14524 14673 I ProfileSeg: resize=1ms float=3ms npu=109ms post=2ms total=115ms
+07-26 17:34:37.823 14524 14673 I ProfilePipeline: models_parallel=148ms, pose=0ms, total=148ms, fps=6.8
+07-26 17:34:37.855 14524 14673 I ProfileDepth: resize=0ms float=1ms npu=26ms post=1ms total=28ms
+07-26 17:34:37.971 14524 14673 I ProfileSeg: resize=2ms float=2ms npu=111ms post=1ms total=116ms
+07-26 17:34:37.971 14524 14673 I ProfilePipeline: models_parallel=144ms, pose=0ms, total=144ms, fps=6.9
+07-26 17:34:38.012 14524 14673 I ProfileDepth: resize=0ms float=1ms npu=32ms post=1ms total=34ms
+07-26 17:34:38.125 14524 14673 I ProfileSeg: resize=2ms float=3ms npu=107ms post=1ms total=113ms
+07-26 17:34:38.126 14524 14673 I ProfilePipeline: models_parallel=147ms, pose=0ms, total=147ms, fps=6.8
+07-26 17:34:38.158 14524 14673 I ProfileDepth: resize=1ms float=1ms npu=25ms post=1ms total=28ms
+07-26 17:34:38.272 14524 14673 I ProfileSeg: resize=2ms float=3ms npu=108ms post=1ms total=114ms
+07-26 17:34:38.272 14524 14673 I ProfilePipeline: models_parallel=142ms, pose=0ms, total=142ms, fps=7.0
+07-26 17:34:38.309 14524 14673 I ProfileDepth: resize=0ms float=1ms npu=30ms post=1ms total=32ms
+07-26 17:34:38.423 14524 14673 I ProfileSeg: resize=1ms float=3ms npu=109ms post=1ms total=114ms
+07-26 17:34:38.423 14524 14673 I ProfilePipeline: models_parallel=146ms, pose=0ms, total=146ms, fps=6.8
+07-26 17:34:38.456 14524 14673 I ProfileDepth: resize=1ms float=1ms npu=26ms post=0ms total=28ms
+07-26 17:34:38.569 14524 14673 I ProfileSeg: resize=2ms float=3ms npu=107ms post=1ms total=113ms
+07-26 17:34:38.569 14524 14673 I ProfilePipeline: models_parallel=141ms, pose=0ms, total=141ms, fps=7.1
+07-26 17:34:38.608 14524 14673 I ProfileDepth: resize=1ms float=1ms npu=32ms post=1ms total=35ms
+07-26 17:34:38.725 14524 14673 I ProfileSeg: resize=2ms float=4ms npu=110ms post=1ms total=117ms
+07-26 17:34:38.725 14524 14673 I ProfilePipeline: models_parallel=152ms, pose=0ms, total=152ms, fps=6.6
+07-26 17:34:38.757 14524 14673 I ProfileDepth: resize=1ms float=1ms npu=26ms post=0ms total=28ms
+07-26 17:34:38.871 14524 14673 I ProfileSeg: resize=2ms float=3ms npu=108ms post=1ms total=114ms
+07-26 17:34:38.871 14524 14673 I ProfilePipeline: models_parallel=142ms, pose=0ms, total=142ms, fps=7.0
+07-26 17:34:38.908 14524 14673 I ProfileDepth: resize=0ms float=1ms npu=30ms post=1ms total=32ms
+07-26 17:34:39.027 14524 14673 I ProfileSeg: resize=2ms float=3ms npu=112ms post=1ms total=118ms
+07-26 17:34:39.027 14524 14673 I ProfilePipeline: models_parallel=151ms, pose=0ms, total=151ms, fps=6.6
+07-26 17:34:39.062 14524 14673 I ProfileDepth: resize=1ms float=1ms npu=27ms post=1ms total=30ms
+07-26 17:34:39.176 14524 14673 I ProfileSeg: resize=2ms float=3ms npu=108ms post=1ms total=114ms
+07-26 17:34:39.176 14524 14673 I ProfilePipeline: models_parallel=144ms, pose=0ms, total=144ms, fps=6.9
+07-26 17:34:39.215 14524 14673 I ProfileDepth: resize=1ms float=1ms npu=31ms post=1ms total=34ms
+07-26 17:34:39.335 14524 14673 I ProfileSeg: resize=2ms float=3ms npu=114ms post=1ms total=120ms
+07-26 17:34:39.335 14524 14673 I ProfilePipeline: models_parallel=154ms, pose=0ms, total=154ms, fps=6.5
+07-26 17:34:39.367 14524 14673 I ProfileDepth: resize=1ms float=1ms npu=26ms post=0ms total=28ms
+07-26 17:34:39.481 14524 14673 I ProfileSeg: resize=1ms float=3ms npu=108ms post=1ms total=113ms
+07-26 17:34:39.481 14524 14673 I ProfilePipeline: models_parallel=142ms, pose=0ms, total=142ms, fps=7.0
+07-26 17:34:39.519 14524 14673 I ProfileDepth: resize=0ms float=1ms npu=30ms post=1ms total=32ms
+07-26 17:34:39.633 14524 14673 I ProfileSeg: resize=2ms float=3ms npu=108ms post=1ms total=114ms
+07-26 17:34:39.633 14524 14673 I ProfilePipeline: models_parallel=146ms, pose=0ms, total=146ms, fps=6.8
+07-26 17:34:39.668 14524 14673 I ProfileDepth: resize=1ms float=1ms npu=28ms post=1ms total=31ms
+07-26 17:34:39.783 14524 14673 I ProfileSeg: resize=1ms float=3ms npu=110ms post=1ms total=115ms
+07-26 17:34:39.783 14524 14673 I ProfilePipeline: models_parallel=146ms, pose=0ms, total=146ms, fps=6.8
+07-26 17:34:39.820 14524 14673 I ProfileDepth: resize=0ms float=2ms npu=29ms post=1ms total=32ms
+07-26 17:34:39.934 14524 14673 I ProfileSeg: resize=2ms float=3ms npu=108ms post=1ms total=114ms
+07-26 17:34:39.934 14524 14673 I ProfilePipeline: models_parallel=146ms, pose=0ms, total=146ms, fps=6.8
+07-26 17:34:39.972 14524 14673 I ProfileDepth: resize=1ms float=1ms npu=31ms post=1ms total=34ms
+07-26 17:34:40.087 14524 14673 I ProfileSeg: resize=2ms float=3ms npu=109ms post=1ms total=115ms
+07-26 17:34:40.087 14524 14673 I ProfilePipeline: models_parallel=149ms, pose=0ms, total=149ms, fps=6.7
+07-26 17:34:40.121 14524 14673 I ProfileDepth: resize=0ms float=1ms npu=27ms post=1ms total=29ms
+07-26 17:34:40.236 14524 14673 I ProfileSeg: resize=2ms float=3ms npu=109ms post=1ms total=115ms
+07-26 17:34:40.236 14524 14673 I ProfilePipeline: models_parallel=144ms, pose=0ms, total=144ms, fps=6.9
+07-26 17:34:40.274 14524 14673 I ProfileDepth: resize=1ms float=1ms npu=32ms post=0ms total=34ms
+07-26 17:34:40.394 14524 14673 I ProfileSeg: resize=3ms float=3ms npu=113ms post=1ms total=120ms
+07-26 17:34:40.394 14524 14673 I ProfilePipeline: models_parallel=154ms, pose=0ms, total=154ms, fps=6.5
+07-26 17:34:40.426 14524 14673 I ProfileDepth: resize=0ms float=1ms npu=26ms post=1ms total=28ms
+07-26 17:34:40.539 14524 14673 I ProfileSeg: resize=2ms float=3ms npu=107ms post=1ms total=113ms
+07-26 17:34:40.539 14524 14673 I ProfilePipeline: models_parallel=141ms, pose=0ms, total=141ms, fps=7.1
+07-26 17:34:40.580 14524 14673 I ProfileDepth: resize=0ms float=1ms npu=30ms post=1ms total=32ms
+07-26 17:34:40.701 14524 14673 I ProfileSeg: resize=2ms float=3ms npu=115ms post=1ms total=121ms
+07-26 17:34:40.701 14524 14673 I ProfilePipeline: models_parallel=153ms, pose=0ms, total=153ms, fps=6.5
+07-26 17:34:40.736 14524 14673 I ProfileDepth: resize=1ms float=1ms npu=28ms post=0ms total=30ms
+07-26 17:34:40.851 14524 14673 I ProfileSeg: resize=2ms float=3ms npu=109ms post=1ms total=115ms
+07-26 17:34:40.851 14524 14673 I ProfilePipeline: models_parallel=145ms, pose=0ms, total=145ms, fps=6.9
+07-26 17:34:40.885 14524 14673 I ProfileDepth: resize=0ms float=1ms npu=27ms post=1ms total=29ms
+07-26 17:34:41.002 14524 14673 I ProfileSeg: resize=2ms float=3ms npu=111ms post=1ms total=117ms
+07-26 17:34:41.002 14524 14673 I ProfilePipeline: models_parallel=146ms, pose=0ms, total=146ms, fps=6.8
+07-26 17:34:41.039 14524 14673 I ProfileDepth: resize=1ms float=1ms npu=30ms post=1ms total=33ms
+07-26 17:34:41.153 14524 14673 I ProfileSeg: resize=2ms float=3ms npu=108ms post=1ms total=114ms
+07-26 17:34:41.154 14524 14673 I ProfilePipeline: models_parallel=147ms, pose=0ms, total=147ms, fps=6.8
+07-26 17:34:41.186 14524 14673 I ProfileDepth: resize=1ms float=1ms npu=25ms post=1ms total=28ms
+07-26 17:34:41.303 14524 14673 I ProfileSeg: resize=2ms float=3ms npu=111ms post=1ms total=117ms
+07-26 17:34:41.303 14524 14673 I ProfilePipeline: models_parallel=145ms, pose=0ms, total=145ms, fps=6.9
+07-26 17:34:41.342 14524 14673 I ProfileDepth: resize=0ms float=1ms npu=33ms post=0ms total=34ms
+07-26 17:34:41.457 14524 14673 I ProfileSeg: resize=2ms float=3ms npu=109ms post=1ms total=115ms
+07-26 17:34:41.457 14524 14673 I ProfilePipeline: models_parallel=149ms, pose=0ms, total=149ms, fps=6.7
+07-26 17:34:41.489 14524 14673 I ProfileDepth: resize=0ms float=1ms npu=25ms post=1ms total=27ms
+07-26 17:34:41.603 14524 14673 I ProfileSeg: resize=2ms float=3ms npu=108ms post=1ms total=114ms
+07-26 17:34:41.603 14524 14673 I ProfilePipeline: models_parallel=141ms, pose=0ms, total=141ms, fps=7.1
+07-26 17:34:41.640 14524 14673 I ProfileDepth: resize=1ms float=1ms npu=30ms post=1ms total=33ms
+07-26 17:34:41.756 14524 14673 I ProfileSeg: resize=2ms float=3ms npu=110ms post=1ms total=116ms
+07-26 17:34:41.756 14524 14673 I ProfilePipeline: models_parallel=149ms, pose=0ms, total=149ms, fps=6.7
+07-26 17:34:41.789 14524 14673 I ProfileDepth: resize=0ms float=1ms npu=26ms post=1ms total=28ms
+07-26 17:34:41.903 14524 14673 I ProfileSeg: resize=2ms float=3ms npu=107ms post=2ms total=114ms
+07-26 17:34:41.903 14524 14673 I ProfilePipeline: models_parallel=142ms, pose=0ms, total=142ms, fps=7.0
+07-26 17:34:41.942 14524 14673 I ProfileDepth: resize=0ms float=2ms npu=32ms post=1ms total=35ms
+07-26 17:34:42.057 14524 14673 I ProfileSeg: resize=2ms float=3ms npu=109ms post=1ms total=115ms
+07-26 17:34:42.057 14524 14673 I ProfilePipeline: models_parallel=150ms, pose=0ms, total=150ms, fps=6.7
+07-26 17:34:42.090 14524 14673 I ProfileDepth: resize=1ms float=1ms npu=25ms post=1ms total=28ms
+07-26 17:34:42.205 14524 14673 I ProfileSeg: resize=2ms float=3ms npu=108ms post=2ms total=115ms
+07-26 17:34:42.205 14524 14673 I ProfilePipeline: models_parallel=143ms, pose=0ms, total=143ms, fps=7.0
+07-26 17:34:42.241 14524 14673 I ProfileDepth: resize=0ms float=2ms npu=29ms post=1ms total=32ms
+07-26 17:34:42.361 14524 14673 I ProfileSeg: resize=2ms float=3ms npu=114ms post=1ms total=120ms
+07-26 17:34:42.361 14524 14673 I ProfilePipeline: models_parallel=152ms, pose=0ms, total=152ms, fps=6.6
+07-26 17:34:42.396 14524 14673 I ProfileDepth: resize=0ms float=1ms npu=28ms post=1ms total=30ms
+07-26 17:34:42.511 14524 14673 I ProfileSeg: resize=2ms float=3ms npu=108ms post=2ms total=115ms
+07-26 17:34:42.511 14524 14673 I ProfilePipeline: models_parallel=145ms, pose=0ms, total=145ms, fps=6.9
+07-26 17:34:42.547 14524 14673 I ProfileDepth: resize=0ms float=1ms npu=30ms post=1ms total=32ms
+07-26 17:34:42.667 14524 14673 I ProfileSeg: resize=2ms float=3ms npu=114ms post=1ms total=120ms
+07-26 17:34:42.667 14524 14673 I ProfilePipeline: models_parallel=152ms, pose=0ms, total=152ms, fps=6.6
+07-26 17:34:42.701 14524 14673 I ProfileDepth: resize=1ms float=1ms npu=26ms post=1ms total=29ms
+07-26 17:34:42.815 14524 14673 I ProfileSeg: resize=2ms float=3ms npu=108ms post=1ms total=114ms
+07-26 17:34:42.815 14524 14673 I ProfilePipeline: models_parallel=143ms, pose=0ms, total=143ms, fps=7.0
+07-26 17:34:42.852 14524 14673 I ProfileDepth: resize=0ms float=1ms npu=30ms post=1ms total=32ms
+07-26 17:34:42.970 14524 14673 I ProfileSeg: resize=2ms float=3ms npu=112ms post=1ms total=118ms
+07-26 17:34:42.970 14524 14673 I ProfilePipeline: models_parallel=150ms, pose=0ms, total=150ms, fps=6.7
+07-26 17:34:43.016 14524 14673 I ProfileDepth: resize=1ms float=1ms npu=31ms post=1ms total=34ms
+07-26 17:34:43.132 14524 14673 I ProfileSeg: resize=2ms float=4ms npu=109ms post=1ms total=116ms
+07-26 17:34:43.132 14524 14673 I ProfilePipeline: models_parallel=150ms, pose=0ms, total=150ms, fps=6.7
+07-26 17:34:43.165 14524 14673 I ProfileDepth: resize=1ms float=1ms npu=26ms post=1ms total=29ms
+07-26 17:34:43.282 14524 14673 I ProfileSeg: resize=2ms float=2ms npu=111ms post=2ms total=117ms
+07-26 17:34:43.282 14524 14673 I ProfilePipeline: models_parallel=146ms, pose=0ms, total=146ms, fps=6.8
+07-26 17:34:43.317 14524 14673 I ProfileDepth: resize=1ms float=1ms npu=29ms post=1ms total=32ms
+07-26 17:34:43.432 14524 14673 I ProfileSeg: resize=2ms float=3ms npu=109ms post=1ms total=115ms
+07-26 17:34:43.432 14524 14673 I ProfilePipeline: models_parallel=147ms, pose=0ms, total=147ms, fps=6.8
+07-26 17:34:43.469 14524 14673 I ProfileDepth: resize=1ms float=1ms npu=31ms post=0ms total=33ms
+07-26 17:34:43.584 14524 14673 I ProfileSeg: resize=2ms float=3ms npu=109ms post=1ms total=115ms
+07-26 17:34:43.584 14524 14673 I ProfilePipeline: models_parallel=148ms, pose=0ms, total=148ms, fps=6.8
+07-26 17:34:43.618 14524 14673 I ProfileDepth: resize=1ms float=1ms npu=27ms post=1ms total=30ms
+07-26 17:34:43.738 14524 14673 I ProfileSeg: resize=2ms float=3ms npu=114ms post=1ms total=120ms
+07-26 17:34:43.739 14524 14673 I ProfilePipeline: models_parallel=151ms, pose=0ms, total=151ms, fps=6.6
+07-26 17:34:43.775 14524 14673 I ProfileDepth: resize=1ms float=1ms npu=29ms post=1ms total=32ms
+07-26 17:34:43.893 14524 14673 I ProfileSeg: resize=2ms float=3ms npu=112ms post=1ms total=118ms
+07-26 17:34:43.893 14524 14673 I ProfilePipeline: models_parallel=150ms, pose=0ms, total=150ms, fps=6.7
+07-26 17:34:43.925 14524 14673 I ProfileDepth: resize=1ms float=1ms npu=25ms post=1ms total=28ms
+07-26 17:34:44.047 14524 14673 I ProfileSeg: resize=2ms float=2ms npu=117ms post=1ms total=122ms
+07-26 17:34:44.047 14524 14673 I ProfilePipeline: models_parallel=150ms, pose=0ms, total=150ms, fps=6.7
+07-26 17:34:44.085 14524 14673 I ProfileDepth: resize=1ms float=1ms npu=30ms post=1ms total=33ms
+07-26 17:34:44.200 14524 14673 I ProfileSeg: resize=2ms float=3ms npu=109ms post=1ms total=115ms
+07-26 17:34:44.200 14524 14673 I ProfilePipeline: models_parallel=148ms, pose=0ms, total=148ms, fps=6.8
+07-26 17:34:44.233 14524 14673 I ProfileDepth: resize=1ms float=1ms npu=26ms post=1ms total=29ms
+07-26 17:34:44.349 14524 14673 I ProfileSeg: resize=1ms float=3ms npu=111ms post=1ms total=116ms
+07-26 17:34:44.349 14524 14673 I ProfilePipeline: models_parallel=145ms, pose=0ms, total=145ms, fps=6.9
+07-26 17:34:44.385 14524 14673 I ProfileDepth: resize=1ms float=2ms npu=27ms post=1ms total=31ms
+07-26 17:34:44.501 14524 14673 I ProfileSeg: resize=2ms float=3ms npu=110ms post=1ms total=116ms
+07-26 17:34:44.501 14524 14673 I ProfilePipeline: models_parallel=147ms, pose=0ms, total=147ms, fps=6.8
+07-26 17:34:44.540 14524 14673 I ProfileDepth: resize=1ms float=1ms npu=31ms post=1ms total=34ms
+07-26 17:34:44.657 14524 14673 I ProfileSeg: resize=2ms float=3ms npu=111ms post=1ms total=117ms
+07-26 17:34:44.657 14524 14673 I ProfilePipeline: models_parallel=151ms, pose=0ms, total=151ms, fps=6.6
+07-26 17:34:44.690 14524 14673 I ProfileDepth: resize=1ms float=1ms npu=26ms post=1ms total=29ms
+07-26 17:34:44.804 14524 14673 I ProfileSeg: resize=1ms float=3ms npu=109ms post=1ms total=114ms
+07-26 17:34:44.804 14524 14673 I ProfilePipeline: models_parallel=143ms, pose=0ms, total=143ms, fps=7.0
+07-26 17:34:44.841 14524 14673 I ProfileDepth: resize=1ms float=1ms npu=30ms post=1ms total=33ms
+07-26 17:34:44.955 14524 14673 I ProfileSeg: resize=1ms float=3ms npu=109ms post=1ms total=114ms
+07-26 17:34:44.955 14524 14673 I ProfilePipeline: models_parallel=147ms, pose=0ms, total=147ms, fps=6.8
+07-26 17:34:44.988 14524 14673 I ProfileDepth: resize=1ms float=1ms npu=26ms post=1ms total=29ms
+07-26 17:34:45.104 14524 14673 I ProfileSeg: resize=2ms float=2ms npu=111ms post=1ms total=116ms
+07-26 17:34:45.104 14524 14673 I ProfilePipeline: models_parallel=145ms, pose=0ms, total=145ms, fps=6.9
+07-26 17:34:45.143 14524 14673 I ProfileDepth: resize=1ms float=1ms npu=32ms post=1ms total=35ms
+07-26 17:34:45.258 14524 14673 I ProfileSeg: resize=2ms float=3ms npu=109ms post=1ms total=115ms
+07-26 17:34:45.258 14524 14673 I ProfilePipeline: models_parallel=150ms, pose=0ms, total=150ms, fps=6.7
+07-26 17:34:45.292 14524 14673 I ProfileDepth: resize=1ms float=1ms npu=28ms post=0ms total=30ms
+07-26 17:34:45.410 14524 14673 I ProfileSeg: resize=3ms float=3ms npu=111ms post=1ms total=118ms
+07-26 17:34:45.410 14524 14673 I ProfilePipeline: models_parallel=148ms, pose=0ms, total=148ms, fps=6.8
+07-26 17:34:45.448 14524 14673 I ProfileDepth: resize=0ms float=2ms npu=29ms post=1ms total=32ms
+07-26 17:34:45.564 14524 14673 I ProfileSeg: resize=2ms float=3ms npu=110ms post=1ms total=116ms
+07-26 17:34:45.564 14524 14673 I ProfilePipeline: models_parallel=148ms, pose=0ms, total=148ms, fps=6.8
+07-26 17:34:45.598 14524 14673 I ProfileDepth: resize=1ms float=1ms npu=28ms post=0ms total=30ms
+07-26 17:34:45.716 14524 14673 I ProfileSeg: resize=2ms float=3ms npu=112ms post=1ms total=118ms
+07-26 17:34:45.716 14524 14673 I ProfilePipeline: models_parallel=148ms, pose=0ms, total=148ms, fps=6.8
+07-26 17:34:45.749 14524 14673 I ProfileDepth: resize=1ms float=1ms npu=27ms post=0ms total=29ms
+07-26 17:34:45.864 14524 14673 I ProfileSeg: resize=1ms float=4ms npu=108ms post=1ms total=114ms
+07-26 17:34:45.864 14524 14673 I ProfilePipeline: models_parallel=144ms, pose=0ms, total=144ms, fps=6.9
+07-26 17:34:45.897 14524 14673 I ProfileDepth: resize=1ms float=1ms npu=26ms post=1ms total=29ms
+07-26 17:34:46.015 14524 14673 I ProfileSeg: resize=2ms float=2ms npu=113ms post=1ms total=118ms
+07-26 17:34:46.015 14524 14673 I ProfilePipeline: models_parallel=147ms, pose=0ms, total=147ms, fps=6.8
+07-26 17:34:46.052 14524 14673 I ProfileDepth: resize=1ms float=1ms npu=28ms post=1ms total=31ms
+07-26 17:34:46.168 14524 14673 I ProfileSeg: resize=2ms float=3ms npu=109ms post=2ms total=116ms
+07-26 17:34:46.168 14524 14673 I ProfilePipeline: models_parallel=147ms, pose=0ms, total=147ms, fps=6.8
+07-26 17:34:46.206 14524 14673 I ProfileDepth: resize=0ms float=1ms npu=32ms post=1ms total=34ms
+07-26 17:34:46.320 14524 14673 I ProfileSeg: resize=2ms float=3ms npu=108ms post=1ms total=114ms
+07-26 17:34:46.320 14524 14673 I ProfilePipeline: models_parallel=148ms, pose=0ms, total=148ms, fps=6.8
+07-26 17:34:46.353 14524 14673 I ProfileDepth: resize=0ms float=1ms npu=26ms post=1ms total=28ms
+07-26 17:34:46.470 14524 14673 I ProfileSeg: resize=2ms float=3ms npu=111ms post=1ms total=117ms
+07-26 17:34:46.470 14524 14673 I ProfilePipeline: models_parallel=145ms, pose=0ms, total=145ms, fps=6.9
+07-26 17:34:46.508 14524 14673 I ProfileDepth: resize=0ms float=1ms npu=31ms post=0ms total=32ms
+07-26 17:34:46.623 14524 14673 I ProfileSeg: resize=2ms float=4ms npu=108ms post=1ms total=115ms
+07-26 17:34:46.623 14524 14673 I ProfilePipeline: models_parallel=147ms, pose=0ms, total=147ms, fps=6.8
+07-26 17:34:46.657 14524 14673 I ProfileDepth: resize=0ms float=1ms npu=27ms post=1ms total=29ms
+07-26 17:34:46.774 14524 14673 I ProfileSeg: resize=2ms float=4ms npu=110ms post=1ms total=117ms
+07-26 17:34:46.774 14524 14673 I ProfilePipeline: models_parallel=146ms, pose=0ms, total=146ms, fps=6.8
+07-26 17:34:46.811 14524 14673 I ProfileDepth: resize=0ms float=1ms npu=31ms post=0ms total=32ms
+07-26 17:34:46.929 14524 14673 I ProfileSeg: resize=2ms float=3ms npu=111ms post=1ms total=117ms
+07-26 17:34:46.929 14524 14673 I ProfilePipeline: models_parallel=150ms, pose=0ms, total=150ms, fps=6.7
+07-26 17:34:46.961 14524 14673 I ProfileDepth: resize=0ms float=2ms npu=25ms post=1ms total=28ms
+07-26 17:34:47.078 14524 14673 I ProfileSeg: resize=1ms float=3ms npu=112ms post=1ms total=117ms
+07-26 17:34:47.078 14524 14673 I ProfilePipeline: models_parallel=145ms, pose=0ms, total=145ms, fps=6.9
+07-26 17:34:47.116 14524 14673 I ProfileDepth: resize=1ms float=1ms npu=31ms post=0ms total=33ms
+07-26 17:34:47.232 14524 14673 I ProfileSeg: resize=2ms float=3ms npu=110ms post=1ms total=116ms
+07-26 17:34:47.232 14524 14673 I ProfilePipeline: models_parallel=149ms, pose=0ms, total=149ms, fps=6.7
+07-26 17:34:47.270 14524 14673 I ProfileDepth: resize=1ms float=1ms npu=30ms post=1ms total=33ms
+07-26 17:34:47.387 14524 14673 I ProfileSeg: resize=2ms float=3ms npu=111ms post=1ms total=117ms
+07-26 17:34:47.387 14524 14673 I ProfilePipeline: models_parallel=150ms, pose=0ms, total=150ms, fps=6.7
+07-26 17:34:47.419 14524 14673 I ProfileDepth: resize=1ms float=1ms npu=26ms post=1ms total=29ms
+07-26 17:34:47.532 14524 14673 I ProfileSeg: resize=2ms float=2ms npu=108ms post=1ms total=113ms
+07-26 17:34:47.533 14524 14673 I ProfilePipeline: models_parallel=142ms, pose=0ms, total=142ms, fps=7.0
+07-26 17:34:47.565 14524 14673 I ProfileDepth: resize=0ms float=1ms npu=26ms post=1ms total=28ms
+07-26 17:34:47.680 14524 14673 I ProfileSeg: resize=2ms float=2ms npu=110ms post=1ms total=115ms
+07-26 17:34:47.680 14524 14673 I ProfilePipeline: models_parallel=143ms, pose=0ms, total=143ms, fps=7.0
+07-26 17:34:47.716 14524 14673 I ProfileDepth: resize=0ms float=2ms npu=28ms post=1ms total=31ms
+07-26 17:34:47.833 14524 14673 I ProfileSeg: resize=2ms float=3ms npu=111ms post=1ms total=117ms
+07-26 17:34:47.833 14524 14673 I ProfilePipeline: models_parallel=148ms, pose=0ms, total=148ms, fps=6.8
+07-26 17:34:47.871 14524 14673 I ProfileDepth: resize=1ms float=1ms npu=32ms post=0ms total=34ms
+07-26 17:34:47.986 14524 14673 I ProfileSeg: resize=2ms float=3ms npu=109ms post=1ms total=115ms
+07-26 17:34:47.986 14524 14673 I ProfilePipeline: models_parallel=149ms, pose=0ms, total=149ms, fps=6.7
+07-26 17:34:48.020 14524 14673 I ProfileDepth: resize=1ms float=1ms npu=27ms post=1ms total=30ms
+07-26 17:34:48.137 14524 14673 I ProfileSeg: resize=2ms float=4ms npu=110ms post=1ms total=117ms
+07-26 17:34:48.137 14524 14673 I ProfilePipeline: models_parallel=147ms, pose=0ms, total=147ms, fps=6.8
+07-26 17:34:48.173 14524 14673 I ProfileDepth: resize=1ms float=1ms npu=30ms post=0ms total=32ms
+07-26 17:34:48.289 14524 14673 I ProfileSeg: resize=2ms float=3ms npu=110ms post=1ms total=116ms
+07-26 17:34:48.289 14524 14673 I ProfilePipeline: models_parallel=148ms, pose=0ms, total=148ms, fps=6.8
+07-26 17:34:48.322 14524 14673 I ProfileDepth: resize=0ms float=2ms npu=26ms post=0ms total=28ms
+07-26 17:34:48.441 14524 14673 I ProfileSeg: resize=2ms float=3ms npu=113ms post=1ms total=119ms
+07-26 17:34:48.441 14524 14673 I ProfilePipeline: models_parallel=147ms, pose=0ms, total=147ms, fps=6.8
+07-26 17:34:48.476 14524 14673 I ProfileDepth: resize=1ms float=1ms npu=29ms post=1ms total=32ms
+07-26 17:34:48.593 14524 14673 I ProfileSeg: resize=2ms float=3ms npu=111ms post=1ms total=117ms
+07-26 17:34:48.593 14524 14673 I ProfilePipeline: models_parallel=149ms, pose=0ms, total=149ms, fps=6.7
+07-26 17:34:48.625 14524 14673 I ProfileDepth: resize=0ms float=1ms npu=25ms post=1ms total=27ms
+07-26 17:34:48.742 14524 14673 I ProfileSeg: resize=2ms float=2ms npu=112ms post=1ms total=117ms
+07-26 17:34:48.742 14524 14673 I ProfilePipeline: models_parallel=144ms, pose=0ms, total=144ms, fps=6.9
+07-26 17:34:48.781 14524 14673 I ProfileDepth: resize=1ms float=1ms npu=30ms post=0ms total=32ms
+07-26 17:34:48.898 14524 14673 I ProfileSeg: resize=2ms float=3ms npu=110ms post=2ms total=117ms
+07-26 17:34:48.898 14524 14673 I ProfilePipeline: models_parallel=149ms, pose=0ms, total=149ms, fps=6.7
+07-26 17:34:48.935 14524 14673 I ProfileDepth: resize=1ms float=1ms npu=30ms post=1ms total=33ms
+07-26 17:34:49.053 14524 14673 I ProfileSeg: resize=2ms float=2ms npu=112ms post=2ms total=118ms
+07-26 17:34:49.053 14524 14673 I ProfilePipeline: models_parallel=151ms, pose=0ms, total=151ms, fps=6.6
+07-26 17:34:49.087 14524 14673 I ProfileDepth: resize=1ms float=1ms npu=26ms post=1ms total=29ms
+07-26 17:34:49.202 14524 14673 I ProfileSeg: resize=1ms float=3ms npu=110ms post=1ms total=115ms
+07-26 17:34:49.202 14524 14673 I ProfilePipeline: models_parallel=144ms, pose=0ms, total=144ms, fps=6.9
+07-26 17:34:49.239 14524 14673 I ProfileDepth: resize=0ms float=1ms npu=30ms post=1ms total=32ms
+07-26 17:34:49.358 14524 14673 I ProfileSeg: resize=2ms float=3ms npu=113ms post=1ms total=119ms
+07-26 17:34:49.358 14524 14673 I ProfilePipeline: models_parallel=151ms, pose=0ms, total=151ms, fps=6.6
+07-26 17:34:49.390 14524 14673 I ProfileDepth: resize=0ms float=2ms npu=25ms post=1ms total=28ms
+07-26 17:34:49.505 14524 14673 I ProfileSeg: resize=2ms float=3ms npu=109ms post=1ms total=115ms
+07-26 17:34:49.505 14524 14673 I ProfilePipeline: models_parallel=143ms, pose=0ms, total=143ms, fps=7.0
+07-26 17:34:49.545 14524 14673 I ProfileDepth: resize=1ms float=1ms npu=30ms post=0ms total=32ms
+07-26 17:34:49.664 14524 14673 I ProfileSeg: resize=1ms float=3ms npu=114ms post=1ms total=119ms
+07-26 17:34:49.664 14524 14673 I ProfilePipeline: models_parallel=152ms, pose=0ms, total=152ms, fps=6.6
+07-26 17:34:49.697 14524 14673 I ProfileDepth: resize=0ms float=1ms npu=26ms post=1ms total=28ms
+07-26 17:34:49.813 14524 14673 I ProfileSeg: resize=2ms float=3ms npu=109ms post=2ms total=116ms
+07-26 17:34:49.813 14524 14673 I ProfilePipeline: models_parallel=144ms, pose=0ms, total=144ms, fps=6.9
+07-26 17:34:49.850 14524 14673 I ProfileDepth: resize=1ms float=1ms npu=29ms post=1ms total=32ms
+07-26 17:34:49.971 14524 14673 I ProfileSeg: resize=1ms float=3ms npu=115ms post=2ms total=121ms
+07-26 17:34:49.971 14524 14673 I ProfilePipeline: models_parallel=153ms, pose=0ms, total=153ms, fps=6.5
+07-26 17:34:50.009 14524 14673 I ProfileDepth: resize=1ms float=1ms npu=32ms post=0ms total=34ms
+07-26 17:34:50.125 14524 14673 I ProfileSeg: resize=2ms float=3ms npu=110ms post=1ms total=116ms
+07-26 17:34:50.125 14524 14673 I ProfilePipeline: models_parallel=150ms, pose=0ms, total=150ms, fps=6.7
+07-26 17:34:50.158 14524 14673 I ProfileDepth: resize=1ms float=1ms npu=26ms post=0ms total=28ms
+07-26 17:34:50.274 14524 14673 I ProfileSeg: resize=1ms float=3ms npu=110ms post=1ms total=115ms
+07-26 17:34:50.274 14524 14673 I ProfilePipeline: models_parallel=144ms, pose=0ms, total=144ms, fps=6.9
+07-26 17:34:50.311 14524 14673 I ProfileDepth: resize=1ms float=1ms npu=29ms post=1ms total=32ms
+07-26 17:34:50.432 14524 14673 I ProfileSeg: resize=2ms float=3ms npu=115ms post=1ms total=121ms
+07-26 17:34:50.432 14524 14673 I ProfilePipeline: models_parallel=153ms, pose=0ms, total=153ms, fps=6.5
+07-26 17:34:50.471 14524 14673 I ProfileDepth: resize=1ms float=1ms npu=32ms post=1ms total=35ms
+07-26 17:34:50.586 14524 14673 I ProfileSeg: resize=1ms float=4ms npu=109ms post=1ms total=115ms
+07-26 17:34:50.586 14524 14673 I ProfilePipeline: models_parallel=150ms, pose=0ms, total=150ms, fps=6.7
+07-26 17:34:50.620 14524 14673 I ProfileDepth: resize=1ms float=1ms npu=27ms post=1ms total=30ms
+07-26 17:34:50.737 14524 14673 I ProfileSeg: resize=2ms float=4ms npu=110ms post=1ms total=117ms
+07-26 17:34:50.738 14524 14673 I ProfilePipeline: models_parallel=147ms, pose=0ms, total=147ms, fps=6.8
+07-26 17:34:50.777 14524 14673 I ProfileDepth: resize=0ms float=1ms npu=30ms post=1ms total=32ms
+07-26 17:34:50.897 14524 14673 I ProfileSeg: resize=2ms float=3ms npu=113ms post=1ms total=119ms
+07-26 17:34:50.897 14524 14673 I ProfilePipeline: models_parallel=152ms, pose=0ms, total=152ms, fps=6.6
+07-26 17:34:50.931 14524 14673 I ProfileDepth: resize=0ms float=2ms npu=27ms post=1ms total=30ms
+07-26 17:34:51.049 14524 14673 I ProfileSeg: resize=2ms float=3ms npu=111ms post=2ms total=118ms
+07-26 17:34:51.049 14524 14673 I ProfilePipeline: models_parallel=148ms, pose=0ms, total=148ms, fps=6.8
+07-26 17:34:51.082 14524 14673 I ProfileDepth: resize=1ms float=2ms npu=26ms post=0ms total=29ms
+07-26 17:34:51.200 14524 14673 I ProfileSeg: resize=2ms float=3ms npu=112ms post=1ms total=118ms
+07-26 17:34:51.200 14524 14673 I ProfilePipeline: models_parallel=147ms, pose=0ms, total=147ms, fps=6.8
+07-26 17:34:51.232 14524 14673 I ProfileDepth: resize=0ms float=1ms npu=26ms post=1ms total=28ms
+07-26 17:34:51.350 14524 14673 I ProfileSeg: resize=2ms float=2ms npu=113ms post=1ms total=118ms
+07-26 17:34:51.351 14524 14673 I ProfilePipeline: models_parallel=146ms, pose=1ms, total=147ms, fps=6.8
+07-26 17:34:51.386 14524 14673 I ProfileDepth: resize=1ms float=1ms npu=29ms post=1ms total=32ms
+07-26 17:34:51.503 14524 14673 I ProfileSeg: resize=2ms float=3ms npu=110ms post=2ms total=117ms
+07-26 17:34:51.503 14524 14673 I ProfilePipeline: models_parallel=149ms, pose=0ms, total=149ms, fps=6.7
+07-26 17:34:51.541 14524 14673 I ProfileDepth: resize=0ms float=2ms npu=31ms post=1ms total=34ms
+07-26 17:34:51.657 14524 14673 I ProfileSeg: resize=2ms float=3ms npu=110ms post=1ms total=116ms
+07-26 17:34:51.657 14524 14673 I ProfilePipeline: models_parallel=150ms, pose=0ms, total=150ms, fps=6.7
+07-26 17:34:51.689 14524 14673 I ProfileDepth: resize=1ms float=1ms npu=25ms post=1ms total=28ms
+07-26 17:34:51.806 14524 14673 I ProfileSeg: resize=2ms float=2ms npu=112ms post=1ms total=117ms
+07-26 17:34:51.806 14524 14673 I ProfilePipeline: models_parallel=145ms, pose=0ms, total=145ms, fps=6.9
+07-26 17:34:51.844 14524 14673 I ProfileDepth: resize=1ms float=1ms npu=30ms post=1ms total=33ms
+07-26 17:34:51.965 14524 14673 I ProfileSeg: resize=2ms float=3ms npu=115ms post=1ms total=121ms
+07-26 17:34:51.965 14524 14673 I ProfilePipeline: models_parallel=154ms, pose=0ms, total=154ms, fps=6.5
+07-26 17:34:52.001 14524 14673 I ProfileDepth: resize=0ms float=2ms npu=28ms post=1ms total=31ms
+07-26 17:34:52.118 14524 14673 I ProfileSeg: resize=2ms float=3ms npu=111ms post=1ms total=117ms
+07-26 17:34:52.118 14524 14673 I ProfilePipeline: models_parallel=148ms, pose=0ms, total=148ms, fps=6.8
+07-26 17:34:52.151 14524 14673 I ProfileDepth: resize=1ms float=1ms npu=25ms post=1ms total=28ms
+07-26 17:34:52.268 14524 14673 I ProfileSeg: resize=2ms float=2ms npu=112ms post=1ms total=117ms
+07-26 17:34:52.268 14524 14673 I ProfilePipeline: models_parallel=145ms, pose=0ms, total=145ms, fps=6.9
+07-26 17:34:52.300 14524 14673 I ProfileDepth: resize=0ms float=1ms npu=26ms post=1ms total=28ms
+07-26 17:34:52.419 14524 14673 I ProfileSeg: resize=2ms float=3ms npu=113ms post=1ms total=119ms
+07-26 17:34:52.419 14524 14673 I ProfilePipeline: models_parallel=147ms, pose=0ms, total=147ms, fps=6.8
+07-26 17:34:52.452 14524 14673 I ProfileDepth: resize=1ms float=1ms npu=26ms post=0ms total=28ms
+07-26 17:34:52.566 14524 14673 I ProfileSeg: resize=1ms float=3ms npu=109ms post=1ms total=114ms
+07-26 17:34:52.566 14524 14673 I ProfilePipeline: models_parallel=143ms, pose=0ms, total=143ms, fps=7.0
+07-26 17:34:52.605 14524 14673 I ProfileDepth: resize=1ms float=1ms npu=32ms post=1ms total=35ms
+07-26 17:34:52.723 14524 14673 I ProfileSeg: resize=2ms float=2ms npu=113ms post=1ms total=118ms
+07-26 17:34:52.723 14524 14673 I ProfilePipeline: models_parallel=153ms, pose=0ms, total=153ms, fps=6.5
+07-26 17:34:52.756 14524 14673 I ProfileDepth: resize=0ms float=1ms npu=26ms post=1ms total=28ms
+07-26 17:34:52.871 14524 14673 I ProfileSeg: resize=2ms float=3ms npu=109ms post=1ms total=115ms
+07-26 17:34:52.871 14524 14673 I ProfilePipeline: models_parallel=143ms, pose=0ms, total=143ms, fps=7.0
+07-26 17:34:52.909 14524 14673 I ProfileDepth: resize=1ms float=1ms npu=30ms post=1ms total=33ms
+07-26 17:34:53.026 14524 14673 I ProfileSeg: resize=1ms float=3ms npu=112ms post=1ms total=117ms
+07-26 17:34:53.027 14524 14673 I ProfilePipeline: models_parallel=150ms, pose=0ms, total=150ms, fps=6.7
+07-26 17:34:53.066 14524 14673 I ProfileDepth: resize=0ms float=1ms npu=32ms post=0ms total=33ms
+07-26 17:34:53.183 14524 14673 I ProfileSeg: resize=2ms float=3ms npu=111ms post=1ms total=117ms
+07-26 17:34:53.183 14524 14673 I ProfilePipeline: models_parallel=150ms, pose=0ms, total=150ms, fps=6.7
+07-26 17:34:53.216 14524 14673 I ProfileDepth: resize=1ms float=1ms npu=27ms post=0ms total=29ms
+07-26 17:34:53.335 14524 14673 I ProfileSeg: resize=1ms float=4ms npu=112ms post=1ms total=118ms
+07-26 17:34:53.335 14524 14673 I ProfilePipeline: models_parallel=148ms, pose=0ms, total=148ms, fps=6.8
+07-26 17:34:53.372 14524 14673 I ProfileDepth: resize=1ms float=1ms npu=30ms post=1ms total=33ms
+07-26 17:34:53.487 14524 14673 I ProfileSeg: resize=1ms float=3ms npu=110ms post=1ms total=115ms
+07-26 17:34:53.487 14524 14673 I ProfilePipeline: models_parallel=148ms, pose=0ms, total=148ms, fps=6.8
+07-26 17:34:53.519 14524 14673 I ProfileDepth: resize=1ms float=1ms npu=26ms post=0ms total=28ms
+07-26 17:34:53.635 14524 14673 I ProfileSeg: resize=2ms float=3ms npu=110ms post=1ms total=116ms
+07-26 17:34:53.635 14524 14673 I ProfilePipeline: models_parallel=144ms, pose=0ms, total=144ms, fps=6.9
+07-26 17:34:53.673 14524 14673 I ProfileDepth: resize=1ms float=1ms npu=31ms post=1ms total=34ms
+07-26 17:34:53.793 14524 14673 I ProfileSeg: resize=2ms float=3ms npu=114ms post=1ms total=120ms
+07-26 17:34:53.793 14524 14673 I ProfilePipeline: models_parallel=154ms, pose=0ms, total=154ms, fps=6.5
+07-26 17:34:53.826 14524 14673 I ProfileDepth: resize=1ms float=1ms npu=26ms post=1ms total=29ms
+07-26 17:34:53.942 14524 14673 I ProfileSeg: resize=2ms float=3ms npu=109ms post=2ms total=116ms
+07-26 17:34:53.942 14524 14673 I ProfilePipeline: models_parallel=145ms, pose=0ms, total=145ms, fps=6.9
+07-26 17:34:53.979 14524 14673 I ProfileDepth: resize=0ms float=1ms npu=31ms post=1ms total=33ms
+07-26 17:34:54.097 14524 14673 I ProfileSeg: resize=2ms float=4ms npu=111ms post=1ms total=118ms
+07-26 17:34:54.097 14524 14673 I ProfilePipeline: models_parallel=151ms, pose=0ms, total=151ms, fps=6.6
+07-26 17:34:54.136 14524 14673 I ProfileDepth: resize=1ms float=1ms npu=32ms post=0ms total=34ms
+07-26 17:34:54.252 14524 14673 I ProfileSeg: resize=2ms float=3ms npu=110ms post=1ms total=116ms
+07-26 17:34:54.252 14524 14673 I ProfilePipeline: models_parallel=150ms, pose=0ms, total=150ms, fps=6.7
+07-26 17:34:54.285 14524 14673 I ProfileDepth: resize=1ms float=1ms npu=26ms post=1ms total=29ms
+07-26 17:34:54.403 14524 14673 I ProfileSeg: resize=1ms float=3ms npu=112ms post=2ms total=118ms
+07-26 17:34:54.403 14524 14673 I ProfilePipeline: models_parallel=147ms, pose=0ms, total=147ms, fps=6.8
+07-26 17:34:54.440 14524 14673 I ProfileDepth: resize=0ms float=2ms npu=29ms post=1ms total=32ms
+07-26 17:34:54.556 14524 14673 I ProfileSeg: resize=2ms float=3ms npu=110ms post=1ms total=116ms
+07-26 17:34:54.556 14524 14673 I ProfilePipeline: models_parallel=148ms, pose=0ms, total=148ms, fps=6.8
+07-26 17:34:54.591 14524 14673 I ProfileDepth: resize=0ms float=1ms npu=28ms post=1ms total=30ms
