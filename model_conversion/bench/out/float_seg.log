@@ -1,0 +1,44 @@
+loading annotations into memory...
+Done (t=0.26s)
+creating index...
+index created!
+Traceback (most recent call last):
+  File "/work/bench/eval_tools.py", line 224, in <module>
+    {"nyu-prep": nyu_prep, "depth-inputs": depth_inputs, "depth-score": depth_score,
+  File "/work/bench/eval_tools.py", line 203, in seg_score
+    for c, s, box, m in decode(o["boxes"], o["scores"], o["coeffs"], proto, size, W, H):
+  File "/work/bench/eval_tools.py", line 165, in decode
+    k = torchvision.ops.batched_nms(xyxy, torch.tensor(sc[keep]), torch.tensor(cls[keep]), iou)[:max_det].numpy()
+  File "/opt/qnn_venv/lib/python3.10/site-packages/torchvision/ops/boxes.py", line 89, in batched_nms
+    return _batched_nms_coordinate_trick(boxes, scores, idxs, iou_threshold)
+  File "/opt/qnn_venv/lib/python3.10/site-packages/torch/jit/_trace.py", line 1383, in wrapper
+    return fn(*args, **kwargs)
+  File "/opt/qnn_venv/lib/python3.10/site-packages/torchvision/ops/boxes.py", line 108, in _batched_nms_coordinate_trick
+    keep = nms(boxes_for_nms, scores, iou_threshold)
+  File "/opt/qnn_venv/lib/python3.10/site-packages/torchvision/ops/boxes.py", line 54, in nms
+    return torch.ops.torchvision.nms(boxes, scores, iou_threshold)
+  File "/opt/qnn_venv/lib/python3.10/site-packages/torch/_ops.py", line 1350, in __call__
+    return self._op(*args, **kwargs)
+RuntimeError: nms_kernel_impl, /__w/vision/vision/pytorch/vision/torchvision/csrc/ops/cpu/nms_kernel.cpp:24, dets should have the same type as scores
+loading annotations into memory...
+Done (t=0.26s)
+creating index...
+index created!
+Traceback (most recent call last):
+  File "/work/bench/eval_tools.py", line 224, in <module>
+    {"nyu-prep": nyu_prep, "depth-inputs": depth_inputs, "depth-score": depth_score,
+  File "/work/bench/eval_tools.py", line 203, in seg_score
+    for c, s, box, m in decode(o["boxes"], o["scores"], o["coeffs"], proto, size, W, H):
+  File "/work/bench/eval_tools.py", line 165, in decode
+    k = torchvision.ops.batched_nms(xyxy, torch.tensor(sc[keep]), torch.tensor(cls[keep]), iou)[:max_det].numpy()
+  File "/opt/qnn_venv/lib/python3.10/site-packages/torchvision/ops/boxes.py", line 89, in batched_nms
+    return _batched_nms_coordinate_trick(boxes, scores, idxs, iou_threshold)
+  File "/opt/qnn_venv/lib/python3.10/site-packages/torch/jit/_trace.py", line 1383, in wrapper
+    return fn(*args, **kwargs)
+  File "/opt/qnn_venv/lib/python3.10/site-packages/torchvision/ops/boxes.py", line 108, in _batched_nms_coordinate_trick
+    keep = nms(boxes_for_nms, scores, iou_threshold)
+  File "/opt/qnn_venv/lib/python3.10/site-packages/torchvision/ops/boxes.py", line 54, in nms
+    return torch.ops.torchvision.nms(boxes, scores, iou_threshold)
+  File "/opt/qnn_venv/lib/python3.10/site-packages/torch/_ops.py", line 1350, in __call__
+    return self._op(*args, **kwargs)
+RuntimeError: nms_kernel_impl, /__w/vision/vision/pytorch/vision/torchvision/csrc/ops/cpu/nms_kernel.cpp:24, dets should have the same type as scores

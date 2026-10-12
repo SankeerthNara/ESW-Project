@@ -1,0 +1,4 @@
+com.example.testmultimodel n=19 fps avg=30.0 min=29.2 | pipeline avg=19.0 ms [18.1-19.9] | NPU depth~8.4 seg~4.2
+com.example.qidk.fps n=18 fps avg=60.0 min=59.8 | pipeline avg=7.8 ms [7.2-8.3] | NPU depth~4.6 seg~3.3
+com.example.qidk.balance n=19 fps avg=30.0 min=29.3 | pipeline avg=20.1 ms [19.5-20.9] | NPU depth~9.4 seg~3.7
+com.example.qidk.quality n=20 fps avg=30.0 min=29.7 | pipeline avg=29.2 ms [28.5-30.0] | NPU depth~19.1 seg~11.7

@@ -5,36 +5,38 @@ import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
-import android.graphics.Rect
 import android.graphics.RectF
 import android.util.AttributeSet
 import android.view.View
-import com.example.multipipeline.pipeline.FrameResult
+import com.example.multipipeline.pipeline.CocoLabels
+import com.example.multipipeline.pipeline.FramePool
 import com.example.multipipeline.pipeline.ObjectPose
+import com.example.multipipeline.pipeline.RenderFrame
 import com.example.multipipeline.pipeline.SegInstance
 import com.example.multipipeline.pipeline.SegmentationStage
 import com.example.multipipeline.pipeline.ViewMode
+import com.example.multipipeline.pipeline.classColor
 
 /**
  * Owns ALL rendering - the camera frame itself plus every model's output -
- * so the 2x2 "ALL" layout can show the live frame in exactly one quadrant
- * while the others show colormap/black-background content, matching the
- * reference pipeline's 4-screen dashboard. CameraX's PreviewView is not used
- * for display; MainActivity keeps it hidden and only uses it to drive the
- * camera pipeline.
+ * so the 2x2 "ALL" layout can show the live frame in each quadrant next to
+ * the depth colormap, matching the reference pipeline's 4-screen dashboard.
+ *
+ * Everything heavy (depth colormap, combined instance masks) arrives as
+ * prebuilt bitmaps in a [RenderFrame], so onDraw is a few scaled bitmap
+ * draws plus lines and text.
  */
 class OverlayView @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
 ) : View(context, attrs) {
 
-    @Volatile private var result: FrameResult? = null
-    @Volatile private var frameBitmap: Bitmap? = null
+    var framePool: FramePool? = null
     @Volatile private var mode: ViewMode = ViewMode.PIPELINE
-    private var depthBitmap: Bitmap? = null
 
-    private val fillPaint = Paint().apply { style = Paint.Style.FILL }
-    private val boxPaint = Paint().apply { style = Paint.Style.STROKE; strokeWidth = 3f; color = Color.YELLOW }
+    private val bitmapPaint = Paint(Paint.FILTER_BITMAP_FLAG)
+    private val fillPaint = Paint().apply { style = Paint.Style.FILL; color = Color.BLACK }
+    private val boxPaint = Paint().apply { style = Paint.Style.STROKE; strokeWidth = 3f }
     private val textPaint = Paint().apply {
         color = Color.WHITE; textSize = 24f; isAntiAlias = true
         setShadowLayer(3f, 0f, 0f, Color.BLACK)
@@ -43,147 +45,96 @@ class OverlayView @JvmOverloads constructor(
     private val axisYPaint = Paint().apply { style = Paint.Style.STROKE; strokeWidth = 4f; color = Color.GREEN }
     private val axisZPaint = Paint().apply { style = Paint.Style.STROKE; strokeWidth = 4f; color = Color.rgb(255, 150, 0) }
     private val originPaint = Paint().apply { style = Paint.Style.FILL; color = Color.YELLOW }
+    private val dividerPaint = Paint().apply { color = Color.DKGRAY; strokeWidth = 3f }
+
+    private val full = RectF()
+    private val quad = Array(4) { RectF() }
 
     fun setMode(newMode: ViewMode) {
         mode = newMode
         postInvalidate()
     }
 
-    fun update(newResult: FrameResult, newFrameBitmap: Bitmap) {
-        result = newResult
-        frameBitmap = newFrameBitmap
-        newResult.depth?.let { depthBitmap = buildDepthBitmap(it.normalizedDepth, it.width, it.height) }
-        postInvalidate()
+    override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {
+        val hw = w / 2f; val hh = h / 2f
+        full.set(0f, 0f, w.toFloat(), h.toFloat())
+        quad[0].set(0f, 0f, hw, hh)
+        quad[1].set(hw, 0f, w.toFloat(), hh)
+        quad[2].set(0f, hh, hw, h.toFloat())
+        quad[3].set(hw, hh, w.toFloat(), h.toFloat())
     }
 
     override fun onDraw(canvas: Canvas) {
         super.onDraw(canvas)
-        val frame = frameBitmap
-        if (frame == null) {
-            fillPaint.color = Color.BLACK
-            canvas.drawRect(fullRect(), fillPaint)
+        val f = framePool?.latestForDraw()
+        val cam = f?.camera
+        if (f == null || cam == null) {
+            canvas.drawRect(full, fillPaint)
             canvas.drawText("Waiting for camera feed...", 32f, height / 2f, textPaint)
             return
         }
 
-        val r = result
-        if (r == null) {
-            drawBitmapInto(canvas, frame, fullRect())
-            canvas.drawText("Initializing models on NPU...", 32f, 60f, textPaint)
-            return
-        }
-
         when (mode) {
-            ViewMode.DEPTH -> drawDepthLayer(canvas, fullRect(), opaque = true)
-            ViewMode.SEGMENTATION -> drawSegLayer(canvas, fullRect(), frame, r, blackBg = false)
-            ViewMode.POSE -> drawPoseLayer(canvas, fullRect(), frame, r, blackBg = false)
-            ViewMode.PIPELINE -> drawPipelineLayer(canvas, fullRect(), frame, r)
+            ViewMode.DEPTH -> drawDepthLayer(canvas, full, f)
+            ViewMode.SEGMENTATION -> drawSegLayer(canvas, full, cam, f)
+            ViewMode.POSE -> drawPoseLayer(canvas, full, cam, f)
+            ViewMode.PIPELINE -> drawPipelineLayer(canvas, full, cam, f)
             ViewMode.ALL -> {
-                val halfW = width / 2f
-                val halfH = height / 2f
-                val topLeft = RectF(0f, 0f, halfW, halfH)
-                val topRight = RectF(halfW, 0f, width.toFloat(), halfH)
-                val bottomLeft = RectF(0f, halfH, halfW, height.toFloat())
-                val bottomRight = RectF(halfW, halfH, width.toFloat(), height.toFloat())
+                drawDepthLayer(canvas, quad[0], f)
+                drawSegLayer(canvas, quad[1], cam, f)
+                drawPoseLayer(canvas, quad[2], cam, f)
+                drawPipelineLayer(canvas, quad[3], cam, f)
 
-                drawDepthLayer(canvas, topLeft, opaque = true)
-                drawSegLayer(canvas, topRight, frame, r, blackBg = false)
-                drawPoseLayer(canvas, bottomLeft, frame, r, blackBg = false)
-                drawPipelineLayer(canvas, bottomRight, frame, r)
+                canvas.drawText("DEPTH (DA-V2 Small)", quad[0].left + 16f, quad[0].top + 32f, textPaint)
+                canvas.drawText("SEGMENTATION", quad[1].left + 16f, quad[1].top + 32f, textPaint)
+                canvas.drawText("POSE (6-DoF)", quad[2].left + 16f, quad[2].top + 32f, textPaint)
+                canvas.drawText("PIPELINE", quad[3].left + 16f, quad[3].top + 32f, textPaint)
 
-                // quadrant header labels for clarity
-                canvas.drawText("DEPTH (DA-V2 Small)", topLeft.left + 16f, topLeft.top + 32f, textPaint)
-                canvas.drawText("SEGMENTATION", topRight.left + 16f, topRight.top + 32f, textPaint)
-                canvas.drawText("POSE (6-DoF)", bottomLeft.left + 16f, bottomLeft.top + 32f, textPaint)
-                canvas.drawText("PIPELINE", bottomRight.left + 16f, bottomRight.top + 32f, textPaint)
-
-                // thin divider lines between quadrants
-                val dividerPaint = Paint().apply { color = Color.DKGRAY; strokeWidth = 3f }
-                canvas.drawLine(halfW, 0f, halfW, height.toFloat(), dividerPaint)
-                canvas.drawLine(0f, halfH, width.toFloat(), halfH, dividerPaint)
+                canvas.drawLine(full.centerX(), 0f, full.centerX(), full.bottom, dividerPaint)
+                canvas.drawLine(0f, full.centerY(), full.right, full.centerY(), dividerPaint)
             }
         }
     }
-
-    private fun fullRect() = RectF(0f, 0f, width.toFloat(), height.toFloat())
 
     private fun mapX(nx: Float, rect: RectF) = rect.left + nx * rect.width()
     private fun mapY(ny: Float, rect: RectF) = rect.top + ny * rect.height()
 
     private fun drawBitmapInto(canvas: Canvas, bmp: Bitmap, rect: RectF) {
-        canvas.drawBitmap(bmp, Rect(0, 0, bmp.width, bmp.height), rect, fillPaint)
+        canvas.drawBitmap(bmp, null, rect, bitmapPaint)
     }
 
-    private fun drawDepthLayer(canvas: Canvas, rect: RectF, opaque: Boolean) {
-        val bmp = depthBitmap ?: run {
-            fillPaint.color = Color.BLACK
-            canvas.drawRect(rect, fillPaint)
+    private fun drawDepthLayer(canvas: Canvas, rect: RectF, f: RenderFrame) {
+        if (f.hasDepth) drawBitmapInto(canvas, f.depthColor, rect) else canvas.drawRect(rect, fillPaint)
+    }
+
+    private fun drawSegLayer(canvas: Canvas, rect: RectF, cam: Bitmap, f: RenderFrame) {
+        drawBitmapInto(canvas, cam, rect)
+        if (f.instances.isEmpty()) {
+            canvas.drawText("Seg: 0 objects detected", rect.left + 16f, rect.top + 64f, textPaint)
             return
         }
-        fillPaint.alpha = 255
-        drawBitmapInto(canvas, bmp, rect)
+        drawBitmapInto(canvas, f.maskOverlay, rect)
+        f.instances.forEach { drawSegBox(canvas, rect, it, drawLabel = true) }
     }
 
-    private fun drawSegLayer(canvas: Canvas, rect: RectF, frame: Bitmap, r: FrameResult, blackBg: Boolean) {
-        if (blackBg) {
-            fillPaint.color = Color.BLACK
-            canvas.drawRect(rect, fillPaint)
-        } else {
-            drawBitmapInto(canvas, frame, rect)
-        }
-        val instances = r.seg?.instances
-        if (instances.isNullOrEmpty()) {
-            val label = if (r.seg == null) "Seg: Initializing..." else "Seg: 0 objects detected"
-            canvas.drawText(label, rect.left + 16f, rect.top + 36f, textPaint)
-        } else {
-            instances.forEach { inst -> drawSegInstance(canvas, rect, inst, drawLabel = true) }
-        }
-    }
-
-    private fun drawSegInstance(canvas: Canvas, rect: RectF, inst: SegInstance, drawLabel: Boolean) {
+    private fun drawSegBox(canvas: Canvas, rect: RectF, inst: SegInstance, drawLabel: Boolean) {
         val size = SegmentationStage.INPUT_SIZE.toFloat()
-        fillPaint.color = colorForClass(inst.classId)
-        fillPaint.alpha = 130
-        val cellW = rect.width() / inst.maskWidth
-        val cellH = rect.height() / inst.maskHeight
-        for (y in 0 until inst.maskHeight) {
-            for (x in 0 until inst.maskWidth) {
-                if (inst.mask[y * inst.maskWidth + x] > 0.5f) {
-                    val left = rect.left + x * cellW
-                    val top = rect.top + y * cellH
-                    canvas.drawRect(left, top, left + cellW, top + cellH, fillPaint)
-                }
-            }
-        }
-        boxPaint.color = colorForClass(inst.classId)
-        canvas.drawRect(
-            mapX(inst.box[0] / size, rect), mapY(inst.box[1] / size, rect),
-            mapX(inst.box[2] / size, rect), mapY(inst.box[3] / size, rect),
-            boxPaint,
-        )
+        val left = mapX(inst.box[0] / size, rect)
+        val top = mapY(inst.box[1] / size, rect)
+        boxPaint.color = classColor(inst.classId)
+        canvas.drawRect(left, top, mapX(inst.box[2] / size, rect), mapY(inst.box[3] / size, rect), boxPaint)
         if (drawLabel) {
-            val label = com.example.multipipeline.pipeline.CocoLabels.NAMES.getOrElse(inst.classId) { "?" }
-            canvas.drawText(
-                "$label ${"%.2f".format(inst.score)}",
-                mapX(inst.box[0] / size, rect), mapY(inst.box[1] / size, rect) - 6f,
-                textPaint,
-            )
+            val label = CocoLabels.NAMES.getOrElse(inst.classId) { "?" }
+            canvas.drawText("$label ${"%.2f".format(inst.score)}", left, top - 6f, textPaint)
         }
     }
 
-    private fun drawPoseLayer(canvas: Canvas, rect: RectF, frame: Bitmap, r: FrameResult, blackBg: Boolean) {
-        if (blackBg) {
-            fillPaint.color = Color.BLACK
-            canvas.drawRect(rect, fillPaint)
+    private fun drawPoseLayer(canvas: Canvas, rect: RectF, cam: Bitmap, f: RenderFrame) {
+        drawBitmapInto(canvas, cam, rect)
+        if (f.poses.isEmpty()) {
+            canvas.drawText("Pose: 0 objects detected", rect.left + 16f, rect.top + 64f, textPaint)
         } else {
-            drawBitmapInto(canvas, frame, rect)
-        }
-        val objects = r.pose?.objects
-        if (objects.isNullOrEmpty()) {
-            val label = if (r.pose == null) "Pose: Initializing..." else "Pose: 0 objects detected"
-            canvas.drawText(label, rect.left + 16f, rect.top + 36f, textPaint)
-        } else {
-            objects.forEach { obj -> drawPoseAxes(canvas, rect, obj) }
+            f.poses.forEach { drawPoseAxes(canvas, rect, it) }
         }
     }
 
@@ -206,34 +157,12 @@ class OverlayView @JvmOverloads constructor(
         canvas.drawText(rotTxt, labelX, labelY + 22f, textPaint)
     }
 
-    private fun drawPipelineLayer(canvas: Canvas, rect: RectF, frame: Bitmap, r: FrameResult) {
-        drawBitmapInto(canvas, frame, rect)
-        r.seg?.instances?.forEach { inst -> drawSegInstance(canvas, rect, inst, drawLabel = false) }
-        r.pose?.objects?.forEach { obj -> drawPoseAxes(canvas, rect, obj) }
-    }
-
-    private fun buildDepthBitmap(depth: FloatArray, w: Int, h: Int): Bitmap {
-        val bmp = Bitmap.createBitmap(w, h, Bitmap.Config.ARGB_8888)
-        val pixels = IntArray(w * h)
-        for (i in depth.indices) pixels[i] = turbo(depth[i])
-        bmp.setPixels(pixels, 0, w, 0, 0, w, h)
-        return bmp
-    }
-
-    /** Cheap blue->red colormap approximation of matplotlib's "turbo". */
-    private fun turbo(v: Float): Int {
-        val t = v.coerceIn(0f, 1f)
-        val r = (t * 255).toInt()
-        val b = ((1f - t) * 255).toInt()
-        val g = (128 * (1f - kotlin.math.abs(t - 0.5f) * 2)).toInt()
-        return Color.argb(255, r, g, b)
-    }
-
-    private fun colorForClass(classId: Int): Int {
-        val palette = intArrayOf(
-            Color.rgb(0, 255, 100), Color.rgb(255, 100, 0), Color.rgb(0, 150, 255), Color.rgb(200, 0, 255),
-            Color.YELLOW, Color.CYAN, Color.MAGENTA, Color.rgb(128, 255, 0),
-        )
-        return palette[classId % palette.size]
+    private fun drawPipelineLayer(canvas: Canvas, rect: RectF, cam: Bitmap, f: RenderFrame) {
+        drawBitmapInto(canvas, cam, rect)
+        if (f.instances.isNotEmpty()) {
+            drawBitmapInto(canvas, f.maskOverlay, rect)
+            f.instances.forEach { drawSegBox(canvas, rect, it, drawLabel = false) }
+        }
+        f.poses.forEach { drawPoseAxes(canvas, rect, it) }
     }
 }

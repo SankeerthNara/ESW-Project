@@ -1,0 +1,5 @@
+com.example.multipipeline: fps=6.6 pipeline mean=147ms (min 141, max 154) depthNPU=28 depthStageTotal=31 segNPU=110 n=124
+com.example.testmultimodel: fps avg=30.0 min=29.0 pipeline avg=18.8ms range 17.5-20.0 n=20
+com.example.qidk.fps: fps avg=55.1 min=0.9 pipeline avg=7.5ms range 7.4-7.8 n=12
+com.example.qidk.balance: fps avg=30.0 min=29.4 pipeline avg=18.0ms range 13.6-21.2 n=20
+com.example.qidk.quality: fps avg=30.0 min=29.8 pipeline avg=29.2ms range 28.5-29.7 n=20

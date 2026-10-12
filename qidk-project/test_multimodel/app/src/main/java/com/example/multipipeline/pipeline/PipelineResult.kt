@@ -1,13 +1,15 @@
 package com.example.multipipeline.pipeline
 
+import android.graphics.Bitmap
+
 enum class ViewMode { DEPTH, SEGMENTATION, POSE, PIPELINE, ALL }
 
-/** Dense depth map. rawDepth is model output (relative), normalizedDepth is 0-1 for display. */
+/** Dense relative depth, min-max normalized to 0-1 (1 = closest). */
 data class DepthResult(
     val width: Int,
     val height: Int,
-    val rawDepth: FloatArray,
     val normalizedDepth: FloatArray,
+    val normalizedBytes: ByteArray, // same values as 0-255, for colorization
 )
 
 data class SegInstance(
@@ -45,10 +47,55 @@ data class ObjectPose(
 
 data class PoseResult(val objects: List<ObjectPose>)
 
-data class FrameResult(
-    val depth: DepthResult?,
-    val seg: SegResult?,
-    val pose: PoseResult?,
-    val sourceWidth: Int,
-    val sourceHeight: Int,
+data class StageTimings(
+    val totalMs: Long,
+    val depthNpuMs: Long,
+    val segNpuMs: Long,
 )
+
+/**
+ * Everything OverlayView needs to draw one processed frame. Instances are
+ * pooled (see FramePool) so the bitmaps are allocated once, not per frame:
+ * the pipeline fills a free one while the UI draws another.
+ */
+class RenderFrame {
+    var camera: Bitmap? = null
+    val depthColor: Bitmap = Bitmap.createBitmap(DepthStage.INPUT_SIZE, DepthStage.INPUT_SIZE, Bitmap.Config.ARGB_8888)
+    val maskOverlay: Bitmap = Bitmap.createBitmap(SegmentationStage.PROTO_SIZE, SegmentationStage.PROTO_SIZE, Bitmap.Config.ARGB_8888)
+    var hasDepth = false
+    var instances: List<SegInstance> = emptyList()
+    var poses: List<ObjectPose> = emptyList()
+    var timings = StageTimings(0, 0, 0)
+
+    /** Reuses the camera bitmap when the frame size is unchanged. */
+    fun cameraBitmap(width: Int, height: Int): Bitmap {
+        val cur = camera
+        if (cur != null && cur.width == width && cur.height == height) return cur
+        cur?.recycle()
+        return Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888).also { camera = it }
+    }
+}
+
+/**
+ * Triple buffer between the pipeline thread and the UI thread: one frame
+ * on screen, one waiting to be drawn, one being filled.
+ */
+class FramePool {
+    private val frames = List(3) { RenderFrame() }
+    private var displayed: RenderFrame? = null
+    private var pending: RenderFrame? = null
+
+    @Synchronized
+    fun acquire(): RenderFrame = frames.first { it !== displayed && it !== pending }
+
+    /** Pipeline thread: hand a filled frame to the UI. */
+    @Synchronized
+    fun publish(frame: RenderFrame) { pending = frame }
+
+    /** UI thread: newest frame to draw (and keep drawing until a newer one arrives). */
+    @Synchronized
+    fun latestForDraw(): RenderFrame? {
+        pending?.let { displayed = it; pending = null }
+        return displayed
+    }
+}

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- QIDK Balance logo, drawn inside the adaptive-icon safe zone (central 66dp). -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp" android:height="108dp"
+    android:viewportWidth="108" android:viewportHeight="108">
+    <path android:fillColor="#FFFFFF" android:pathData="M52.5,31 h3 v45 h-3 z" />
+    <path android:fillColor="#FFFFFF" android:pathData="M40,76 h28 v4 h-28 z" />
+    <path android:fillColor="#FFFFFF" android:pathData="M30,35 h48 v3 h-48 z" />
+    <path android:fillColor="#FFFFFF" android:pathData="M54,26 a4,4 0 1,1 0.01,0 z" />
+    <path android:strokeColor="#FFFFFF" android:strokeWidth="1.5" android:pathData="M33,38 L25,58 M33,38 L41,58 M75,38 L67,58 M75,38 L83,58" />
+    <path android:fillColor="#FFFFFF" android:pathData="M23,58 h20 a10,10 0 0,1 -20,0 z" />
+    <path android:fillColor="#FFFFFF" android:pathData="M65,58 h20 a10,10 0 0,1 -20,0 z" />
+</vector>

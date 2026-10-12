@@ -1,0 +1,3 @@
+{"variant": "fps", "size": 280, "mode": "float", "n": 654, "AbsRel": 0.0809, "RMSE_m": 0.3558, "delta1": 0.9353}
+{"variant": "balance", "size": 392, "mode": "float", "n": 654, "AbsRel": 0.0707, "RMSE_m": 0.3258, "delta1": 0.9471}
+{"variant": "quality", "size": 518, "mode": "float", "n": 654, "AbsRel": 0.062, "RMSE_m": 0.2992, "delta1": 0.9547}

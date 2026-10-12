@@ -1,0 +1,8 @@
+base_depth            Total Inference Time: 84940 us  Accelerator Time: 40313 us 
+base_seg              Total Inference Time: 3478 us  Accelerator Time: 1649 us 
+cur_fps_depth         Total Inference Time: 23604 us  Accelerator Time: 3272 us 
+cur_fps_seg           Total Inference Time: 3459 us  Accelerator Time: 502 us 
+cur_balance_depth     Total Inference Time: 26352 us  Accelerator Time: 5994 us 
+cur_balance_seg       Total Inference Time: 6000 us  Accelerator Time: 1099 us 
+cur_quality_depth     Total Inference Time: 44600 us  Accelerator Time: 12872 us 
+cur_quality_seg       Total Inference Time: 9272 us  Accelerator Time: 2795 us 

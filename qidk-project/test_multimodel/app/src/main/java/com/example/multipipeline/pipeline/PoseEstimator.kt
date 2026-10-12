@@ -42,23 +42,23 @@ class PoseEstimator {
         val mw = inst.maskWidth
         val mh = inst.maskHeight
 
-        // Collect "on" mask pixel coordinates (normalized 0-1 in image space)
-        val onPixels = ArrayList<FloatArray>() // [nx, ny]
-        for (y in 0 until mh) {
-            for (x in 0 until mw) {
-                if (inst.mask[y * mw + x] > 0.5f) {
-                    onPixels.add(floatArrayOf((x + 0.5f) / mw, (y + 0.5f) / mh))
-                }
-            }
-        }
-        if (onPixels.size < MIN_MASK_PIXELS) return null
+        // Count "on" mask pixels first so they can be subsampled without
+        // materializing a coordinate list.
+        val mask = inst.mask
+        var onCount = 0
+        for (v in mask) if (v > 0.5f) onCount++
+        if (onCount < MIN_MASK_PIXELS) return null
 
-        val step = maxOf(1, onPixels.size / MAX_SAMPLE_POINTS)
-        val points3d = ArrayList<DoubleArray>() // [x, y, z] in pseudo-meters
+        val step = maxOf(1, onCount / MAX_SAMPLE_POINTS)
+        val points3d = ArrayList<DoubleArray>(onCount / step + 1) // [x, y, z] in pseudo-meters
 
-        var i = 0
-        while (i < onPixels.size) {
-            val (nx, ny) = onPixels[i]
+        var seen = 0
+        for (p in mask.indices) {
+            if (mask[p] <= 0.5f) continue
+            if (seen++ % step != 0) continue
+            // Mask pixel center, normalized 0-1 in image space
+            val nx = ((p % mw) + 0.5f) / mw
+            val ny = ((p / mw) + 0.5f) / mh
             val dx = (nx * depth.width).toInt().coerceIn(0, depth.width - 1)
             val dy = (ny * depth.height).toInt().coerceIn(0, depth.height - 1)
             val zNorm = depth.normalizedDepth[dy * depth.width + dx]
@@ -72,7 +72,6 @@ class PoseEstimator {
                 val y = (ny - 0.5) * z * aspect
                 points3d.add(doubleArrayOf(x.toDouble(), y, z.toDouble()))
             }
-            i += step
         }
         if (points3d.size < MIN_VALID_POINTS) return null
 
