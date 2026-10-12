@@ -89,3 +89,7 @@ Thumbs.db
 
 # Benchmark datasets (COCO, NYU Depth v2) - download locally, too large for GitHub
 model_conversion/bench/data/
+
+# Presentations
+*.pptx
+*.ppt
